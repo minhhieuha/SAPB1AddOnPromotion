@@ -264,6 +264,19 @@
 #End Region
 
 #Region "Query"
+    Public Function GetLogin(ByVal dataBaseName As String, ByVal userName As String, ByVal passWord As String) As DataSet
+        Dim connect As New Connection()
+        Try
+            Dim ds As New DataSet("oCompany")
+            Dim errMsg As String = connect.setSQLDB(dataBaseName)
+            If errMsg.Length = 0 Then
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser WHERE UserName = @Param1 AND Password = @Param2", New Object() {userName, passWord})
+            End If
+            Return ds
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function
     Public Function GetAllCompany(ByVal dataBaseName As String) As DataSet
         Dim connect As New Connection()
         Try

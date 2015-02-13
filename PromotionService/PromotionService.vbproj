@@ -155,7 +155,6 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\SBOWebService.dll" />
     <Content Include="Promotion.asmx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -207,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SAPbobsCOM">

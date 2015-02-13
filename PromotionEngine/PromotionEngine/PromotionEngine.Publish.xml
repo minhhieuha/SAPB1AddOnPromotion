@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\Users\abeo\Desktop\Promotion\Web" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Styles/bootstrap.css" publishTime="02/10/2015 14:25:25" />
+    <file relUrl="Lib/Newtonsoft.Json.dll" publishTime="02/10/2015 23:16:14" />
+    <file relUrl="Styles/Login/typica-login.css" publishTime="02/13/2015 09:46:36" />
+    <file relUrl="Images/bg2.png" publishTime="02/12/2015 21:40:48" />
+    <file relUrl="Global.asax" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Site.Master" publishTime="02/13/2015 11:09:57" />
+    <file relUrl="About.aspx" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Scripts/jquery-1.8.2.js" publishTime="02/10/2015 14:26:04" />
+    <file relUrl="bin/PromotionEngine.dll" publishTime="02/13/2015 10:42:37" />
+    <file relUrl="Scripts/Login/bootstrap.js" publishTime="02/12/2015 21:59:54" />
+    <file relUrl="Styles/Login/ValidationEngine.css" publishTime="02/13/2015 09:58:07" />
+    <file relUrl="Images/loading.gif" publishTime="02/13/2015 10:30:43" />
+    <file relUrl="Styles/bootstrap-responsive.min.css" publishTime="02/12/2015 21:46:36" />
+    <file relUrl="Account/Register.aspx" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Account/Login.aspx" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Account/Web.config" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Scripts/jquery.validate.js" publishTime="02/12/2015 22:45:57" />
+    <file relUrl="User.aspx" publishTime="02/12/2015 09:55:42" />
+    <file relUrl="Styles/Login/bootstrap-responsive.min.css" publishTime="02/12/2015 21:59:40" />
+    <file relUrl="Scripts/jquery.bootpag.min.js" publishTime="02/10/2015 13:14:25" />
+    <file relUrl="Company.aspx" publishTime="02/12/2015 09:58:34" />
+    <file relUrl="Scripts/jquery.validationEngine-en.js" publishTime="02/13/2015 09:52:29" />
+    <file relUrl="Default.aspx" publishTime="02/11/2015 14:21:18" />
+    <file relUrl="bin/Newtonsoft.Json.dll" publishTime="02/10/2015 23:16:14" />
+    <file relUrl="Scripts/Login/backstretch.min.js" publishTime="02/12/2015 21:59:54" />
+    <file relUrl="Scripts/Login/jquery.js" publishTime="02/12/2015 21:59:54" />
+    <file relUrl="Styles/Login/bootstrap.min.css" publishTime="02/12/2015 21:59:40" />
+    <file relUrl="Scripts/Login/typica-login.js" publishTime="02/13/2015 09:47:04" />
+    <file relUrl="Scripts/jquery.validationEngine.js" publishTime="02/13/2015 09:51:58" />
+    <file relUrl="Account/ChangePasswordSuccess.aspx" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Account/ChangePassword.aspx" publishTime="02/09/2015 11:40:29" />
+    <file relUrl="Login.aspx" publishTime="02/13/2015 11:02:41" />
+    <file relUrl="Web.config" publishTime="02/12/2015 10:49:31" />
+    <file relUrl="Styles/bootstrap-responsive.css" publishTime="02/10/2015 14:25:25" />
+    <file relUrl="Scripts/bootstrap.js" publishTime="02/10/2015 14:26:02" />
+    <file relUrl="Styles/bootstrap.min.css" publishTime="02/12/2015 21:52:32" />
+    <file relUrl="bin/PromotionEngine.pdb" publishTime="02/13/2015 10:42:37" />
+    <file relUrl="Scripts/jquery.min.js" publishTime="02/10/2015 13:14:25" />
+    <file relUrl="Scripts/bootstrap.min.js" publishTime="02/10/2015 14:26:04" />
+    <file relUrl="Images/bg1.png" publishTime="02/12/2015 21:40:40" />
+  </publishProfile>
+</publishData>

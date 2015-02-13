@@ -16,6 +16,7 @@ namespace PromotionEngine
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+          
             if (!IsPostBack)
             {
                 LoadData();
@@ -46,7 +47,6 @@ namespace PromotionEngine
           {
               
           }
-
         }
         [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]

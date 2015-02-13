@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\Users\abeo\Desktop\Promotion\WS" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/itextsharp.dll" publishTime="10/21/2014 15:39:02" />
+    <file relUrl="Web.config" publishTime="02/12/2015 10:46:16" />
+    <file relUrl="Promotion.asmx" publishTime="02/10/2015 10:52:16" />
+    <file relUrl="bin/PromotionService.pdb" publishTime="02/12/2015 22:17:43" />
+    <file relUrl="bin/PromotionService.xml" publishTime="02/12/2015 22:17:43" />
+    <file relUrl="bin/PromotionService.dll" publishTime="02/12/2015 22:17:43" />
+  </publishProfile>
+</publishData>

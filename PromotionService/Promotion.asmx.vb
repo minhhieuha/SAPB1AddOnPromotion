@@ -56,6 +56,11 @@ Public Class Promotion
 #End Region
 #Region "Query"
     <WebMethod()> _
+    Public Function GetLogin(ByVal dataBaseName As String, ByVal userName As String, ByVal passWord As String) As DataSet
+        Dim promotion As New clsPromotion
+        Return promotion.GetLogin(dataBaseName, userName, passWord)
+    End Function
+    <WebMethod()> _
     Public Function GetAllCompany(ByVal dataBaseName As String) As DataSet
         Dim promotion As New clsPromotion
         Return promotion.GetAllCompany(dataBaseName)

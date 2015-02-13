@@ -9,3 +9,14 @@ C:\DATA\SAPB1AddOn\PromotionService\obj\Debug\PromotionService.dll
 C:\DATA\SAPB1AddOn\PromotionService\obj\Debug\PromotionService.xml
 C:\DATA\SAPB1AddOn\PromotionService\obj\Debug\PromotionService.pdb
 C:\DATA\SAPB1AddOn\PromotionService\obj\Debug\PromotionService.vbprojResolveAssemblyReference.cache
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\bin\PromotionService.dll
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\bin\PromotionService.pdb
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\bin\PromotionService.xml
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\Interop.SAPbobsCOM.dll
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.vbproj.ResolveComReference.cache
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.Resources.resources
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.vbproj.GenerateResource.Cache
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.dll
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.xml
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.pdb
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.vbprojResolveAssemblyReference.cache

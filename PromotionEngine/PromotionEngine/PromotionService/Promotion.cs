@@ -40,6 +40,8 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     private System.Threading.SendOrPostCallback UpdateItemOperationCompleted;
     
+    private System.Threading.SendOrPostCallback GetLoginOperationCompleted;
+    
     private System.Threading.SendOrPostCallback GetAllCompanyOperationCompleted;
     
     private System.Threading.SendOrPostCallback GetCompanyByCodeOperationCompleted;
@@ -58,7 +60,7 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public Promotion() {
-        this.Url = "http://localhost:49310/Promotion.asmx";
+        this.Url = "http://sapb1addon.com/promotionservice/Promotion.asmx";
     }
     
     /// <remarks/>
@@ -78,6 +80,9 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public event UpdateItemCompletedEventHandler UpdateItemCompleted;
+    
+    /// <remarks/>
+    public event GetLoginCompletedEventHandler GetLoginCompleted;
     
     /// <remarks/>
     public event GetAllCompanyCompletedEventHandler GetAllCompanyCompleted;
@@ -457,6 +462,53 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
         if ((this.UpdateItemCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateItemCompleted(this, new UpdateItemCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetLogin", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    public System.Data.DataSet GetLogin(string dataBaseName, string userName, string passWord) {
+        object[] results = this.Invoke("GetLogin", new object[] {
+                    dataBaseName,
+                    userName,
+                    passWord});
+        return ((System.Data.DataSet)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginGetLogin(string dataBaseName, string userName, string passWord, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("GetLogin", new object[] {
+                    dataBaseName,
+                    userName,
+                    passWord}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public System.Data.DataSet EndGetLogin(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((System.Data.DataSet)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void GetLoginAsync(string dataBaseName, string userName, string passWord) {
+        this.GetLoginAsync(dataBaseName, userName, passWord, null);
+    }
+    
+    /// <remarks/>
+    public void GetLoginAsync(string dataBaseName, string userName, string passWord, object userState) {
+        if ((this.GetLoginOperationCompleted == null)) {
+            this.GetLoginOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetLoginOperationCompleted);
+        }
+        this.InvokeAsync("GetLogin", new object[] {
+                    dataBaseName,
+                    userName,
+                    passWord}, this.GetLoginOperationCompleted, userState);
+    }
+    
+    private void OnGetLoginOperationCompleted(object arg) {
+        if ((this.GetLoginCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.GetLoginCompleted(this, new GetLoginCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -958,6 +1010,32 @@ public partial class UpdateItemCompletedEventArgs : System.ComponentModel.AsyncC
         get {
             this.RaiseExceptionIfNecessary();
             return ((string)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+public delegate void GetLoginCompletedEventHandler(object sender, GetLoginCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class GetLoginCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal GetLoginCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public System.Data.DataSet Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((System.Data.DataSet)(this.results[0]));
         }
     }
 }
