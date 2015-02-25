@@ -22,7 +22,7 @@
                         Dim count As Integer = connect.Object_Execute_SAP(query, params)
                     Else
                         query = "UPDATE  [oCompany] SET "
-                        query += ",[CompanyName] = @Param1"
+                    query += " [CompanyName] = @Param1"
                         query += ",[IsActive] = @Param2"
                         query += ",[Address] = @Param3"
                         query += ",[ContactPerson] = @Param4"
@@ -60,7 +60,7 @@
                         Dim count As Integer = connect.Object_Execute_SAP(query, params)
                     Else
                         query = "UPDATE  [oCompany] SET "
-                        query += ",[CompanyName] = @Param1"
+                        query += " [CompanyName] = @Param1"
                         query += ",[IsActive] = @Param2"
                         query += ",[Address] = @Param3"
                         query += ",[ContactPerson] = @Param4"
@@ -102,7 +102,7 @@
                     Dim count As Integer = connect.Object_Execute_SAP(query, params)
                 Else
                     query = "UPDATE  [oUser] SET "
-                    query += "  ,[CompanyCode] = @Param1"
+                    query += "  [CompanyCode] = @Param1"
                     query += "  ,[Password] = @Param2"
                     query += "  ,[IsAdmin] = @Param3"
                     query += "  ,[IsActive] = @Param4"
@@ -111,7 +111,7 @@
                     query += "  ,[Phone] = @Param7"
                     query += "  ,[UserName] = @Param8"
                     query += " WHERE [UserID] = @Param9"
-                    connect.Object_Execute_SAP(query, New Object() {CompanyCode, UserPassword, IsAdmin, IsActive, IsTrial, Email, Phone, userName, userId})
+                    connect.Object_Execute_SAP(query, New Object() {CompanyCode, UserPassword, IsAdmin, IsActive, IsTrial, Email, Phone, userName, oUserID})
                 End If
             Else
                 Return errMsg
@@ -145,7 +145,7 @@
                         Dim count As Integer = connect.Object_Execute_SAP(query, params)
                     Else
                         query = "UPDATE  [oUser] SET "
-                        query += "  ,[CompanyCode] = @Param1"
+                        query += "  [CompanyCode] = @Param1"
                         query += "  ,[Password] = @Param2"
                         query += "  ,[IsAdmin] = @Param3"
                         query += "  ,[IsActive] = @Param4"
@@ -161,6 +161,55 @@
                     Return errMsg
                 End If
             Next
+        Catch ex As Exception
+            'WriteLog(ex.StackTrace & " " & ex.Message)
+            Return ex.Message
+        End Try
+        Return String.Empty
+    End Function
+    Public Function UpdateJsonCustomer(ByVal userId As String, ByVal passWord As String, ByVal customerId As String, _
+                                       ByVal customerCode As String, ByVal customerName As String, ByVal companyCode As String, _
+                                       ByVal createdUserId As String, ByVal createdDate As DateTime, ByVal isActive As Boolean, ByVal billingAddress As String, _
+                                       ByVal shippingAddress As String, ByVal contactPerson As String, _
+                                       ByVal phoneNumber As String, ByVal email As String, ByVal databaseName As String, ByVal isInsert As Boolean) As String
+        Dim connect As New Connection()
+        Try
+            Dim errMsg As String = connect.setSQLDB(databaseName)
+            If errMsg.Length = 0 Then
+                Dim params = New Object() {customerCode, customerName, companyCode, createdUserId, _
+                                           isActive, billingAddress, shippingAddress, contactPerson, phoneNumber, email}
+                Dim query As String = String.Empty
+                If isInsert = True Then
+                    query = " INSERT INTO [oCustomer]"
+                    query += "  ([CustomerCode]"
+                    query += " ,[CustomerName]"
+                    query += " ,[CompanyCode]"
+                    query += " ,[CreatedUserID]"
+                    query += " ,[IsActive]"
+                    query += " ,[BillingAddress]"
+                    query += " ,[ShippingAddress]"
+                    query += " ,[ContactPerson]"
+                    query += " ,[PhoneNumber]"
+                    query += " ,[Email]) "
+                    query += "VALUES (@Param1,@Param2,@Param3,@Param4,@Param5,@Param6,@Param7,@Param8,@Param9,@Param10)"
+                    Dim count As Integer = connect.Object_Execute_SAP(query, params)
+                Else
+                    query = "UPDATE  [oCustomer] SET "
+                    query += "  [CustomerName] = @Param1"
+                    query += "  ,[CompanyCode] = @Param2"
+                    query += "  ,[IsActive] = @Param3"
+                    query += "  ,[BillingAddress] = @Param4"
+                    query += "  ,[ShippingAddress] = @Param5"
+                    query += "  ,[ContactPerson] = @Param6"
+                    query += "  ,[PhoneNumber] = @Param7"
+                    query += "  ,[Email] = @Param8"
+                    query += " WHERE [CustomerID] = @Param9"
+                    connect.Object_Execute_SAP(query, New Object() {customerName, companyCode,
+                                           isActive, billingAddress, shippingAddress, contactPerson, phoneNumber, email, customerId})
+                End If
+            Else
+                Return errMsg
+            End If
         Catch ex As Exception
             'WriteLog(ex.StackTrace & " " & ex.Message)
             Return ex.Message
@@ -193,7 +242,7 @@
                         Dim count As Integer = connect.Object_Execute_SAP(query, params)
                     Else
                         query = "UPDATE  [oCustomer] SET "
-                        query += "  ,[CustomerName] = @Param1"
+                        query += "  [CustomerName] = @Param1"
                         query += "  ,[CompanyCode] = @Param2"
                         query += "  ,[CreatedUserID] = @Param3"
                         query += "  ,[IsActive] = @Param4"
@@ -211,6 +260,47 @@
                     Return errMsg
                 End If
             Next
+        Catch ex As Exception
+            'WriteLog(ex.StackTrace & " " & ex.Message)
+            Return ex.Message
+        End Try
+        Return String.Empty
+    End Function
+    Public Function UpdateJsonItem(ByVal userId As String, ByVal passWord As String, _
+                                         ByVal itemID As String, ByVal itemCode As String, ByVal itemName As String, _
+                                         ByVal companyCode As String, ByVal basePrice As Double, ByVal createduserId As String, _
+                                         ByVal createdDate As Date, ByVal isActive As Boolean, ByVal allowPromotion As Boolean, _
+                                         ByVal databaseName As String, ByVal isInsert As Boolean) As String
+        Dim connect As New Connection()
+        Try
+                Dim errMsg As String = connect.setSQLDB(databaseName)
+                If errMsg.Length = 0 Then
+                Dim params = New Object() {itemCode, itemName, companyCode, basePrice, createduserId, isActive, allowPromotion}
+                    Dim query As String = String.Empty
+                    If isInsert = True Then
+                        query = " INSERT INTO [oItem]"
+                        query += "  ([ItemCode]"
+                        query += "  ,[ItemName]"
+                        query += "  ,[CompanyCode]"
+                        query += "  ,[BasePrice]"
+                    query += "  ,[CreatedUserID]"
+                        query += "  ,[IsActive]"
+                        query += "  ,[AllowPromotion])"
+                    query += "VALUES (@Param1,@Param2,@Param3,@Param4,@Param5,@Param6,@Param7)"
+                        Dim count As Integer = connect.Object_Execute_SAP(query, params)
+                    Else
+                        query = "UPDATE  [oItem] SET "
+                        query += "  [ItemName] = @Param1"
+                        query += "  ,[CompanyCode] = @Param2"
+                        query += "  ,[BasePrice] = @Param3"
+                    query += "  ,[IsActive] = @Param4"
+                    query += "  ,[AllowPromotion] = @Param5"
+                    query += " WHERE [ItemID] = @Param6"
+                    connect.Object_Execute_SAP(query, New Object() {itemName, companyCode, basePrice, isActive, allowPromotion, itemID})
+                    End If
+                Else
+                    Return errMsg
+                End If
         Catch ex As Exception
             'WriteLog(ex.StackTrace & " " & ex.Message)
             Return ex.Message
@@ -240,7 +330,7 @@
                         Dim count As Integer = connect.Object_Execute_SAP(query, params)
                     Else
                         query = "UPDATE  [oItem] SET "
-                        query += "  ,[ItemName] = @Param1"
+                        query += "  [ItemName] = @Param1"
                         query += "  ,[CompanyCode] = @Param2"
                         query += "  ,[BasePrice] = @Param3"
                         query += "  ,[CreatedUserID] = @Param4"
@@ -309,7 +399,7 @@
             Dim ds As New DataSet("oUser")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser")
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode ORDER BY UserID DESC")
             End If
             Return ds
         Catch ex As Exception
@@ -322,7 +412,7 @@
             Dim ds As New DataSet("oUser")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser WHERE UserName = @Param1", New Object() {userName})
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode WHERE UserName = @Param1", New Object() {userName})
             End If
             Return ds
         Catch ex As Exception
@@ -335,7 +425,7 @@
             Dim ds As New DataSet("oCustomer")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer")
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode JOIN oUser T2 ON T0.CreatedUserID = T2.UserID ORDER BY T0.CustomerID DESC")
             End If
             Return ds
         Catch ex As Exception
@@ -348,7 +438,7 @@
             Dim ds As New DataSet("oCustomer")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer WHERE CustomerCode = @Param1", New Object() {customerCode})
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer  T0 JOIN oCompany   T1 ON T0.CompanyCode = T1.CompanyCode  JOIN oUser T2 ON T0.CreatedUserID = T2.UserID WHERE CustomerCode = @Param1", New Object() {customerCode})
             End If
             Return ds
         Catch ex As Exception
@@ -361,7 +451,7 @@
             Dim ds As New DataSet("oItem")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem")
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode  ORDER BY ItemID DESC")
             End If
             Return ds
         Catch ex As Exception
@@ -374,7 +464,7 @@
             Dim ds As New DataSet("oItem")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem WHERE ItemCode = @Param1", New Object() {itemCode})
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem  T0 JOIN oCompany  T1 ON T0.CompanyCode = T1.CompanyCode  WHERE ItemCode = @Param1", New Object() {itemCode})
             End If
             Return ds
         Catch ex As Exception

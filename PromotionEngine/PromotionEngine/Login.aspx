@@ -57,15 +57,14 @@ label.error,div.error{
                     $("#btnLogin").click();
                 }
             });
-            $("#ajax_loader").ajaxStop(function () {
-                $(this).hide();
-            });
-            $("#ajax_loader").ajaxStart(function () {
-                $(this).show();
-            });
+//            $("#ajax_loader").ajaxStop(function () {
+//                $(this).hide();
+//            });
+//            $("#ajax_loader").ajaxStart(function () {
+//                $(this).show();
+//            });
             $("#form1").validationEngine('attach', { promptPosition: "topRight" });
             $("#btnLogin").click(function () {
-                $('#ajax_loader').show();
                 var valid = $("#form1").validationEngine('validate');
                 if (valid == true) {
                     var usr = $("#txtUserName").val();
@@ -96,9 +95,9 @@ label.error,div.error{
     </script>
 </head>
 <body>
-    <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none;">
+   <%-- <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none;">
         <img src="Images/loading.gif"></img>
-    </div>
+    </div>--%>
     <form id="form1" runat="server" class="form login-form">
     <div>
         <div class="navbar navbar-fixed-top">

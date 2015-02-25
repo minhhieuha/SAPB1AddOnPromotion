@@ -7,6 +7,5 @@ C:\DATA\SAPB1AddOn\PromotionEngine\PromotionEngine\obj\Debug\PromotionEngine.csp
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\bin\PromotionEngine.dll
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\bin\PromotionEngine.pdb
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\bin\Newtonsoft.Json.dll
-C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\obj\Debug\PromotionEngine.csprojResolveAssemblyReference.cache
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\obj\Debug\PromotionEngine.dll
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionEngine\PromotionEngine\obj\Debug\PromotionEngine.pdb

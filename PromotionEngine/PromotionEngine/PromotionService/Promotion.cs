@@ -32,6 +32,10 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     private System.Threading.SendOrPostCallback UpdateJsonUserOperationCompleted;
     
+    private System.Threading.SendOrPostCallback UpdateJsonCustomerOperationCompleted;
+    
+    private System.Threading.SendOrPostCallback UpdateJsonItemOperationCompleted;
+    
     private System.Threading.SendOrPostCallback UpdateCompanyOperationCompleted;
     
     private System.Threading.SendOrPostCallback UpdateUserOperationCompleted;
@@ -60,7 +64,11 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public Promotion() {
-        this.Url = "http://sapb1addon.com/promotionservice/Promotion.asmx";
+        String urlSetting = System.Configuration.ConfigurationManager.AppSettings["PromotionServiceWSURL"];
+        if (String.IsNullOrEmpty(urlSetting))
+            this.Url = "http://demo1.w4vn.com/Reports.asmx";
+        else
+            this.Url = urlSetting;
     }
     
     /// <remarks/>
@@ -68,6 +76,12 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public event UpdateJsonUserCompletedEventHandler UpdateJsonUserCompleted;
+    
+    /// <remarks/>
+    public event UpdateJsonCustomerCompletedEventHandler UpdateJsonCustomerCompleted;
+    
+    /// <remarks/>
+    public event UpdateJsonItemCompletedEventHandler UpdateJsonItemCompleted;
     
     /// <remarks/>
     public event UpdateCompanyCompletedEventHandler UpdateCompanyCompleted;
@@ -250,6 +264,236 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
         if ((this.UpdateJsonUserCompleted != null)) {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateJsonUserCompleted(this, new UpdateJsonUserCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/UpdateJsonCustomer", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    public string UpdateJsonCustomer(
+                string userId, 
+                string passWord, 
+                string customerId, 
+                string customerCode, 
+                string customerName, 
+                string companyCode, 
+                string CreatedUserId, 
+                System.DateTime createdDate, 
+                bool isActive, 
+                string billingAddress, 
+                string shippingAddress, 
+                string contactPerson, 
+                string phoneNumber, 
+                string email, 
+                string databaseName, 
+                bool isInsert) {
+        object[] results = this.Invoke("UpdateJsonCustomer", new object[] {
+                    userId,
+                    passWord,
+                    customerId,
+                    customerCode,
+                    customerName,
+                    companyCode,
+                    CreatedUserId,
+                    createdDate,
+                    isActive,
+                    billingAddress,
+                    shippingAddress,
+                    contactPerson,
+                    phoneNumber,
+                    email,
+                    databaseName,
+                    isInsert});
+        return ((string)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginUpdateJsonCustomer(
+                string userId, 
+                string passWord, 
+                string customerId, 
+                string customerCode, 
+                string customerName, 
+                string companyCode, 
+                string CreatedUserId, 
+                System.DateTime createdDate, 
+                bool isActive, 
+                string billingAddress, 
+                string shippingAddress, 
+                string contactPerson, 
+                string phoneNumber, 
+                string email, 
+                string databaseName, 
+                bool isInsert, 
+                System.AsyncCallback callback, 
+                object asyncState) {
+        return this.BeginInvoke("UpdateJsonCustomer", new object[] {
+                    userId,
+                    passWord,
+                    customerId,
+                    customerCode,
+                    customerName,
+                    companyCode,
+                    CreatedUserId,
+                    createdDate,
+                    isActive,
+                    billingAddress,
+                    shippingAddress,
+                    contactPerson,
+                    phoneNumber,
+                    email,
+                    databaseName,
+                    isInsert}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public string EndUpdateJsonCustomer(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((string)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void UpdateJsonCustomerAsync(
+                string userId, 
+                string passWord, 
+                string customerId, 
+                string customerCode, 
+                string customerName, 
+                string companyCode, 
+                string CreatedUserId, 
+                System.DateTime createdDate, 
+                bool isActive, 
+                string billingAddress, 
+                string shippingAddress, 
+                string contactPerson, 
+                string phoneNumber, 
+                string email, 
+                string databaseName, 
+                bool isInsert) {
+        this.UpdateJsonCustomerAsync(userId, passWord, customerId, customerCode, customerName, companyCode, CreatedUserId, createdDate, isActive, billingAddress, shippingAddress, contactPerson, phoneNumber, email, databaseName, isInsert, null);
+    }
+    
+    /// <remarks/>
+    public void UpdateJsonCustomerAsync(
+                string userId, 
+                string passWord, 
+                string customerId, 
+                string customerCode, 
+                string customerName, 
+                string companyCode, 
+                string CreatedUserId, 
+                System.DateTime createdDate, 
+                bool isActive, 
+                string billingAddress, 
+                string shippingAddress, 
+                string contactPerson, 
+                string phoneNumber, 
+                string email, 
+                string databaseName, 
+                bool isInsert, 
+                object userState) {
+        if ((this.UpdateJsonCustomerOperationCompleted == null)) {
+            this.UpdateJsonCustomerOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateJsonCustomerOperationCompleted);
+        }
+        this.InvokeAsync("UpdateJsonCustomer", new object[] {
+                    userId,
+                    passWord,
+                    customerId,
+                    customerCode,
+                    customerName,
+                    companyCode,
+                    CreatedUserId,
+                    createdDate,
+                    isActive,
+                    billingAddress,
+                    shippingAddress,
+                    contactPerson,
+                    phoneNumber,
+                    email,
+                    databaseName,
+                    isInsert}, this.UpdateJsonCustomerOperationCompleted, userState);
+    }
+    
+    private void OnUpdateJsonCustomerOperationCompleted(object arg) {
+        if ((this.UpdateJsonCustomerCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.UpdateJsonCustomerCompleted(this, new UpdateJsonCustomerCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/UpdateJsonItem", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+    public string UpdateJsonItem(string userId, string passWord, string itemID, string itemCode, string itemName, string companyCode, double basePrice, string createduserId, System.DateTime createdDate, bool isActive, bool allowPromotion, string databaseName, bool isInsert) {
+        object[] results = this.Invoke("UpdateJsonItem", new object[] {
+                    userId,
+                    passWord,
+                    itemID,
+                    itemCode,
+                    itemName,
+                    companyCode,
+                    basePrice,
+                    createduserId,
+                    createdDate,
+                    isActive,
+                    allowPromotion,
+                    databaseName,
+                    isInsert});
+        return ((string)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginUpdateJsonItem(string userId, string passWord, string itemID, string itemCode, string itemName, string companyCode, double basePrice, string createduserId, System.DateTime createdDate, bool isActive, bool allowPromotion, string databaseName, bool isInsert, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("UpdateJsonItem", new object[] {
+                    userId,
+                    passWord,
+                    itemID,
+                    itemCode,
+                    itemName,
+                    companyCode,
+                    basePrice,
+                    createduserId,
+                    createdDate,
+                    isActive,
+                    allowPromotion,
+                    databaseName,
+                    isInsert}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public string EndUpdateJsonItem(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((string)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void UpdateJsonItemAsync(string userId, string passWord, string itemID, string itemCode, string itemName, string companyCode, double basePrice, string createduserId, System.DateTime createdDate, bool isActive, bool allowPromotion, string databaseName, bool isInsert) {
+        this.UpdateJsonItemAsync(userId, passWord, itemID, itemCode, itemName, companyCode, basePrice, createduserId, createdDate, isActive, allowPromotion, databaseName, isInsert, null);
+    }
+    
+    /// <remarks/>
+    public void UpdateJsonItemAsync(string userId, string passWord, string itemID, string itemCode, string itemName, string companyCode, double basePrice, string createduserId, System.DateTime createdDate, bool isActive, bool allowPromotion, string databaseName, bool isInsert, object userState) {
+        if ((this.UpdateJsonItemOperationCompleted == null)) {
+            this.UpdateJsonItemOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateJsonItemOperationCompleted);
+        }
+        this.InvokeAsync("UpdateJsonItem", new object[] {
+                    userId,
+                    passWord,
+                    itemID,
+                    itemCode,
+                    itemName,
+                    companyCode,
+                    basePrice,
+                    createduserId,
+                    createdDate,
+                    isActive,
+                    allowPromotion,
+                    databaseName,
+                    isInsert}, this.UpdateJsonItemOperationCompleted, userState);
+    }
+    
+    private void OnUpdateJsonItemOperationCompleted(object arg) {
+        if ((this.UpdateJsonItemCompleted != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.UpdateJsonItemCompleted(this, new UpdateJsonItemCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
     
@@ -897,6 +1141,58 @@ public partial class UpdateJsonUserCompletedEventArgs : System.ComponentModel.As
     private object[] results;
     
     internal UpdateJsonUserCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public string Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((string)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+public delegate void UpdateJsonCustomerCompletedEventHandler(object sender, UpdateJsonCustomerCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class UpdateJsonCustomerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal UpdateJsonCustomerCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public string Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((string)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+public delegate void UpdateJsonItemCompletedEventHandler(object sender, UpdateJsonItemCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class UpdateJsonItemCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal UpdateJsonItemCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
             base(exception, cancelled, userState) {
         this.results = results;
     }

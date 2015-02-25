@@ -16,37 +16,45 @@ namespace PromotionEngine
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+
             if (!IsPostBack)
             {
-                LoadData();
-                
+                //LoadData();
+
             }
         }
-
-        private  void LoadData()
+        [WebMethod]
+        public static string GetCompanys()
         {
             Promotion pmt = new Promotion();
             DataSet dsPromotion = pmt.GetAllCompany(ConfigurationManager.AppSettings["DATABASE_NAME"].ToString());
             if (dsPromotion != null)
             {
-                this.grvCompany.DataSource = dsPromotion;
-                this.grvCompany.DataBind();
+                return JsonConvert.SerializeObject(dsPromotion.Tables[0]);
+            }
+            return string.Empty;
+        }
+        private void LoadData()
+        {
+            Promotion pmt = new Promotion();
+            DataSet dsPromotion = pmt.GetAllCompany(ConfigurationManager.AppSettings["DATABASE_NAME"].ToString());
+            if (dsPromotion != null)
+            {
             }
         }
         [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-        public static void UpdateCompany(string oCompany)
+        public static void UpdateCompany(string oCompany,bool isInsert)
         {
             Model.Company company = JsonConvert.DeserializeObject<Model.Company>(oCompany);
             Promotion pmt = new Promotion();
 
-          string errMsg=   pmt.UpdateJsonCompany("", "", company.CompanyCode, company.CompanyName, company.IsActive, company.Address, company.ContactPerson, company.ContactPhone,
-                ConfigurationManager.AppSettings["DATABASE_NAME"].ToString(), true);
-          if (errMsg.Length == 0)
-          {
-              
-          }
+            string errMsg = pmt.UpdateJsonCompany("", "", company.CompanyCode, company.CompanyName, company.IsActive, company.Address, company.ContactPerson, company.ContactPhone,
+                  ConfigurationManager.AppSettings["DATABASE_NAME"].ToString(), isInsert);
+            if (errMsg.Length == 0)
+            {
+
+            }
         }
         [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]

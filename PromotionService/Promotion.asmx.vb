@@ -30,6 +30,26 @@ Public Class Promotion
 
     End Function
     <WebMethod()> _
+    Public Function UpdateJsonCustomer(ByVal userId As String, ByVal passWord As String, ByVal customerId As String, _
+                                       ByVal customerCode As String, ByVal customerName As String, ByVal companyCode As String, _
+                                       ByVal CreatedUserId As String, ByVal createdDate As DateTime, ByVal isActive As Boolean, ByVal billingAddress As String, _
+                                       ByVal shippingAddress As String, ByVal contactPerson As String, _
+                                       ByVal phoneNumber As String, ByVal email As String, ByVal databaseName As String, ByVal isInsert As Boolean) As String
+        Dim promotion As New clsPromotion
+        Return promotion.UpdateJsonCustomer(userId, passWord, customerId, customerCode, customerName, companyCode, CreatedUserId, createdDate, _
+                                           isActive, billingAddress, shippingAddress, contactPerson, phoneNumber, email,databaseName ,isInsert)
+
+    End Function
+    <WebMethod()> _
+    Public Function UpdateJsonItem(ByVal userId As String, ByVal passWord As String, _
+                                         ByVal itemID As String, ByVal itemCode As String, ByVal itemName As String, _
+                                         ByVal companyCode As String, ByVal basePrice As Double, ByVal createduserId As String, _
+                                         ByVal createdDate As Date, ByVal isActive As Boolean, ByVal allowPromotion As Boolean, _
+                                         ByVal databaseName As String, ByVal isInsert As Boolean) As String
+        Dim promotion As New clsPromotion
+        Return promotion.UpdateJsonItem(userId, passWord, itemID, itemCode, itemName, companyCode, basePrice, createduserId, createdDate, isActive, allowPromotion, databaseName, isInsert)
+    End Function
+    <WebMethod()> _
     Public Function UpdateCompany(ByVal userId As String, ByVal passWord As String, _
                                          ByVal data As DataSet, ByVal databaseName As String, ByVal isInsert As Boolean) As String
         Dim promotion As New clsPromotion

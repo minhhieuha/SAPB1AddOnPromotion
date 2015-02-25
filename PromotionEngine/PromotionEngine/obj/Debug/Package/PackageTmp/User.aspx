@@ -1,206 +1,270 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="User.aspx.cs" Inherits="PromotionEngine.User" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
+    CodeBehind="User.aspx.cs" Inherits="PromotionEngine.User" Title="Promotion Engine - User" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <script>
-      var oUser = {};
-      $(document).ready(function () {
+    <script type="text/javascript">
+        var oUser = {};
+        var isInsert = false;
+        var jsonCompany = {}
+        $(document).ready(function () {
+            GetCompanys();
+            GetUsers();
+        });
+        function showPassword(checkboxElem) {
+            if (checkboxElem.checked) {
+                $('#Password').attr('type', 'text');
+            } else {
+                $('#Password').attr('type', 'password');
+            }
+        }
+        function initUser() {
 
-          $.ajax({
-              type: "POST",
-              url: "User.aspx/GetAllCompany",
-              data: "",
-              contentType: "application/json; charset=utf-8",
-              dataType: "json",
-              success: function (Result) {
-                  $.each(Result.d, function () {
-                      $("#dllCompany").append($("<option></option>").val(this['Text']).html(this['Value']));
-                  });
-
-              },
-              error: function (xhr, status, err) {
-                  var err = eval("(" + xhr.responseText + ")");
-                  alert(err.Message);
-
-              }
-          });
-
-          $("#btnSave").click(function () {
-
-              var num = 1;
-              oUser.CompanyCode = $("#dllCompany").val();
-              oUser.UserName = $("#txtUser-username").val();
-              if ($("#chkIsActive").is(':checked')) {
-                  oUser.IsActive = 'true';
-              }
-              else {
-                  oUser.IsActive = 'false';
-              }
-              if ($("#chkIsAdmin").is(':checked')) {
-                  oUser.IsAdmin = 'true';
-              }
-              else {
-                  oUser.IsAdmin = 'false';
-              }
-              if ($("#chkIsTrial").is(':checked')) {
-                  oUser.IsTrial = 'true';
-              }
-              else {
-                  oUser.IsTrial = 'false';
-              }
-              oUser.Email = $("#txtUser-email").val();
-              oUser.Phone = $("#txtUser-phone").val();
-              $('input[type=password]').each(function (index, value) {
-                  //oUser.Password = value.value;
-              });
-              oUser.Password = $("#txtUser-password").val();
-              $.ajax({
-                  type: "POST",
-                  url: "User.aspx/UpdateUser",
-                  data: JSON.stringify({
-                      oUser: JSON.stringify(oUser)
-                  }),
-                  contentType: "application/json; charset=utf-8",
-                  dataType: "json",
-                  success: function (data) {
-                      //bindGrid(data.d);
-                      $("#myModal").modal('hide'); //hide popup  
-                      window.parent.location.reload();
-                  },
-                  error: function (xhr, status, err) {
-                      var err = eval("(" + xhr.responseText + ")");
-                      alert(err.Message);
-
-                  }
-              });
-          });
-      });
-      function initCompany() {
-
-          oCompany.CompanyCode = '';
-          oCompany.CompanyName = '';
-          oCompany.IsActive = '';
-          oCompany.Address = '';
-          oCompany.ContactPerson = "";
-          oCompany.ContactPhone = "";
-
-      }
+            oUser.UserID = 0;
+            oUser.CompanyCode = '';
+            oUser.UserName = '';
+            oUser.Password = ''
+            oUser.Email = '';
+            oUser.Phone = '';
+            oUser.IsActive = false;
+            oUser.IsTrial = false;
+            oUser.IsAdmin = false;
+        }
+        //Get All User
+        function GetUsers() {
+            $.ajax({
+                type: "POST",
+                url: "User.aspx/GetUsers",
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+        }
+        //Get All User
+        function GetCompanys() {
+            $.ajax({
+                type: "POST",
+                url: "User.aspx/GetCompanys",
+                data: '',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    jsonCompany = $.parseJSON(data.d)
+                },
+                failure: function (response) {
+                    alert(response.d);
+                },
+                error: function (response) {
+                    alert(response.d);
+                }
+            });
+        }
     </script>
-    <asp:GridView ID="grvUser" runat="server" CssClass="table table-striped table-bordered table-condensed"
-        Width="100%" AllowPaging="false">
-    </asp:GridView>
-    <asp:Button ID="btnAddNew" runat="server" data-toggle="modal" Text="Add New" CssClass="btn btn-primary btn-lg"
-        data-target="#myModal" OnClick="btnAddNew_Click" />
-    <!-- Button trigger modal -->
-    <%--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-  Launch demo modal
-</button>--%>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        User</h4>
-                </div>
-                <div class="modal-body">
-                    <table style="width: 100%; border: 2px;">
-                        <tr>
-                            <td style="width: 120px;">
-                                <label for="recipient-name" class="control-label">
-                                    Company :</label>
-                            </td>
-                            <td>
-                                <select class="selectpicker" id="dllCompany">
-                                </select>
-                                <asp:DropDownList ID="drpCompany" runat="server" CssClass="selectpicker" Visible="false">
-                                </asp:DropDownList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="control-label">
-                                    User Name:</label>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="txtUser-username" style="width: 350px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="control-label">
-                                    Password:</label>
-                            </td>
-                            <td>
-                                <input type="password" class="form-control" id="txtUser-password" style="width: 350px;">
-                            </td>
-                        </tr>
-                          <tr>
-                            <td>
-                                <label for="recipient-name" class="control-label">
-                                    Confirm Password:</label>
-                            </td>
-                            <td>
-                                <input type="password" class="form-control" id="txtUser-confirm-password" style="width: 350px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="control-label">
-                                    Email:</label>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="txtUser-email" style="width: 350px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="control-label">
-                                    Phone:</label>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="txtUser-phone" style="width: 350px;">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="form-control">
-                                IsActive:</label>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="form-control" id="chkIsActive">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="form-control">
-                                IsAdmin:</label>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="form-control" id="chkIsAdmin">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="recipient-name" class="form-control">
-                                IsTrial:</label>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="form-control" id="chkIsTrial">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Close</button>
-                    <button type="button" id="btnSave" class="btn btn-primary">
-                        Save changes</button>
-                </div>
-            </div>
+    <script type="text/javascript">
+        function passwordEditor(container, options) {
+            $('<input type="password" class="k-input k-textbox" required data-bind="value:' + options.field + '"/>').appendTo(container);
+        };
+        //Bind Data
+        function OnSuccess(response) {
+            var data = $.parseJSON(response.d);
+            var grid = $("#grid").kendoGrid({
+                dataSource: { data: data,
+                    pageSize: 20,
+                    schema: {
+                        type: 'json',
+                        model: {
+                            id: "UserID",
+                            fields: {
+                                UserName: { type: "string", validation: { required: true} },
+                                CompanyCode: { type: "string", validation: { required: true} },
+                                Password: { type: "string", validation: { required: true} },
+                                IsAdmin: { type: "boolean" },
+                                IsTrial: { type: "boolean" },
+                                IsActive: { type: "boolean" },
+                                Email: { type: "string", validation: { required: true} },
+                                Phone: { type: "string", validation: { required: true} }
+                                //                                Company: { defaultValue: { CompanyCode: 0, CompanyName: "[Select Company]"} }
+                            }
+                        }
+                    }
+                },
+                filterable: true,
+                height: 500,
+                sortable: true,
+                toolbar: [{ name: 'create', text: 'Add New User'}],
+                pageable: true,
+                batch: true,
+                columns: [{ field: "UserID", title: "UserID", width: 70, hidden: true },
+                            { field: "UserName", title: "User Name", width: 100 },
+                            { field: "CompanyName", title: "Company", width: 200 },
+                            { field: "CompanyCode", title: "Company", width: 200, hidden: true },
+                            { field: "Password", title: "Password", width: 100, hidden: true },
+                            { field: "Email", title: "Email", width: 300 },
+                            { field: "Phone", title: "Phone" },
+                            { field: "IsAdmin", title: "Admin" },
+                            { field: "IsTrial", title: "Trial" },
+                            { field: "IsActive", title: "Active", width: 70 },
+                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                , editable: {
+                    mode: "popup",
+                    template: $("#template").html(),
+                    confirmation: "Are you sure you want to remove this user?"
+                },
+                edit: function (e) {
+                    $('#ddlCompany').kendoDropDownList({
+                        optionLabel: "[Select Company]",
+                        dataTextField: "CompanyName",
+                        dataValueField: "CompanyCode",
+                        dataSource: {
+                            data: jsonCompany
+                        }
+                    });
+
+                    var editWindow = e.container.data("kendoWindow");
+                    $('[name="UserID"]').attr("disabled", true);
+                    $('[name="CompanyName"]').attr("display", false);
+                    if (e.model.isNew()) {
+                        $('[name="Password"]').val(generatePassword());
+                        e.container.data("kendoWindow").title('Add New User');
+                        $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Save";
+                        isInsert = true;
+                        $('[name="UserName"]').attr("readonly", false);
+                        initUser();
+                    }
+                    else {
+                        e.container.data("kendoWindow").title('Edit User');
+                        $('[name="UserName"]').attr("readonly", true);
+
+                        isInsert = false;
+                    }
+                },
+                remove: function (e) {
+                    //alert("delete event captured");
+                },
+                save: function (e) {
+                    var that = this;
+                    var num = 1;
+                    var listTextBox = $("input:text");
+                    for (var i = 0; i < listTextBox.length; i++) {
+                        var name = listTextBox[i].name;
+                        oUser[name] = $("[name=" + name + "]").val();
+                    }
+                    var listPassword = $("input:password");
+                    for (var i = 0; i < listPassword.length; i++) {
+                        var name = listPassword[i].name;
+                        oUser[name] = $("[name=" + name + "]").val();
+                    }
+
+                    var listCheckBox = $("input:checkbox");
+                    for (var i = 0; i < listCheckBox.length; i++) {
+                        var name = listCheckBox[i].name;
+                        if ($("[name=" + name + "]").is(':checked')) {
+                            oUser[name] = 'true';
+                        }
+                        else {
+                            oUser[name] = 'false';
+                        }
+                    }
+                    oUser.Email = $("[name=Email]").val();
+                    oUser.CompanyCode = $("#ddlCompany").val();
+
+                    //Update or Insert User
+                    $.ajax({
+                        type: "POST",
+                        url: "User.aspx/UpdateUser",
+                        data: JSON.stringify({
+                            oUser: JSON.stringify(oUser),
+                            isInsert: isInsert
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            //Reload Data 
+                            GetUsers();
+                        },
+                        error: function (xhr, status, err) {
+                            var err = eval("(" + xhr.responseText + ")");
+                            alert(err.Message);
+                        }
+                    });
+                }
+            });
+        };
+    </script>
+    <script type="text/x-kendo-template" id="template">    
+          <div class="k-edit-form-container"  >
+        <div class="k-edit-label" style="display:none;">
+            <label for="UserID">
+                UserID</label>
         </div>
+        <div class="k-edit-field" data-container-for="UserID"  style="display:none;">
+            <input name="UserID" disabled="disabled" class="k-input k-textbox" type="text" data-bind="value:UserID"></div>
+        <div class="k-edit-label">
+            <label for="UserName">
+                User Name</label></div>
+        <div class="k-edit-field" data-container-for="UserName">
+            <input name="UserName" class="k-input k-textbox" required="required" type="text"
+                readonly="readonly" data-bind="value:UserName">
+        </div>
+        <div class="k-edit-label">
+            <label for="CompanyCode">
+                Company</label></div>
+        <div data-container-for="CompanyCode" class="k-edit-field">
+             <input id="ddlCompany" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
+            </div>
+        <div class="k-edit-label">
+            <label for="Password">
+                Password</label></div>
+        <div class="k-edit-field" data-container-for="Password">
+            <input class="k-input k-textbox" required="required" type="password" data-bind="value:Password" name="Password" id="Password">
+        </div>
+        <div class="k-edit-label">
+            <label for="ShowPassword">
+                Show Password</label>
+        </div>
+        <div class="k-edit-field" >
+            <input  id="ShowPassword" type="checkbox" onClick="showPassword(this);">
+        </div>
+        <div class="k-edit-label">
+            <label for="Email">
+                Email</label>
+        </div>
+        <div class="k-edit-field" data-container-for="Email">
+            <input name="Email" class="k-input k-textbox" required="required" type="email" data-bind="value:Email">
+        </div>
+        <div class="k-edit-label">
+            <label for="Phone">
+                Phone</label></div>
+        <div class="k-edit-field" data-container-for="Phone">
+            <input name="Phone" class="k-input k-textbox" required="required" type="text" data-bind="value:Phone"></div>
+        <div class="k-edit-label">
+            <label for="IsAdmin">
+                Admin</label>
+        </div>
+        <div class="k-edit-field" data-container-for="IsAdmin">
+            <input name="IsAdmin" type="checkbox" data-bind="checked:IsAdmin" data-type="boolean">
+        </div>
+        <div class="k-edit-label">
+            <label for="IsTrial">
+                Trial</label></div>
+        <div class="k-edit-field" data-container-for="IsTrial">
+            <input name="IsTrial" type="checkbox" data-bind="checked:IsTrial" data-type="boolean"></div>
+        <div class="k-edit-label">
+            <label for="IsActive">
+                Active</label></div>
+        <div class="k-edit-field" data-container-for="IsActive">
+            <input name="IsActive" type="checkbox" data-bind="checked:IsActive" data-type="boolean"></div>
+    </div>
+          
+    </script>
+    <div style="position: absolute; z-index: 0;">
+    <div id="grid">
+    </div>
     </div>
 </asp:Content>

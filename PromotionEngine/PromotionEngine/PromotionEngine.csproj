@@ -60,11 +60,13 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Company.aspx" />
+    <Content Include="Customer.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Images\bg1.png" />
     <Content Include="Images\bg2.png" />
     <Content Include="Images\loading.gif" />
+    <Content Include="Item.aspx" />
     <Content Include="Lib\Newtonsoft.Json.dll" />
     <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.js" />
@@ -72,10 +74,14 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validationEngine-en.js" />
     <Content Include="Scripts\jquery.validationEngine.js" />
+    <Content Include="Scripts\Kendo\kendo.all.min.js" />
     <Content Include="Scripts\Login\backstretch.min.js" />
     <Content Include="Scripts\Login\bootstrap.js" />
     <Content Include="Scripts\Login\jquery.js" />
     <Content Include="Scripts\Login\typica-login.js" />
+    <Content Include="Scripts\menu_script.js" />
+    <Content Include="Scripts\Utils.js" />
+    <Content Include="Styles\menu_styles.css" />
     <Content Include="Styles\bootstrap-responsive.css" />
     <Content Include="Styles\bootstrap-responsive.min.css" />
     <Content Include="Styles\bootstrap.css" />
@@ -83,6 +89,24 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery.bootpag.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Styles\Kendo\Default\editor.png" />
+    <Content Include="Styles\Kendo\Default\imagebrowser.png" />
+    <Content Include="Styles\Kendo\Default\indeterminate.gif" />
+    <Content Include="Styles\Kendo\Default\loading-image.gif" />
+    <Content Include="Styles\Kendo\Default\loading.gif" />
+    <Content Include="Styles\Kendo\Default\loading_2x.gif" />
+    <Content Include="Styles\Kendo\Default\markers.png" />
+    <Content Include="Styles\Kendo\Default\markers_2x.png" />
+    <Content Include="Styles\Kendo\Default\slider-h.gif" />
+    <Content Include="Styles\Kendo\Default\slider-v.gif" />
+    <Content Include="Styles\Kendo\Default\sprite.png" />
+    <Content Include="Styles\Kendo\Default\sprite_2x.png" />
+    <Content Include="Styles\Kendo\Default\sprite_kpi.png" />
+    <Content Include="Styles\Kendo\Default\sprite_kpi_2x.png" />
+    <Content Include="Styles\Kendo\kendo.common.min.css" />
+    <Content Include="Styles\Kendo\kendo.dataviz.default.min.css" />
+    <Content Include="Styles\Kendo\kendo.dataviz.min.css" />
+    <Content Include="Styles\Kendo\kendo.default.min.css" />
     <Content Include="Styles\Login\bootstrap-responsive.min.css" />
     <Content Include="Styles\Login\bootstrap.min.css" />
     <Content Include="Styles\Login\typica-login.css" />
@@ -139,6 +163,13 @@
     <Compile Include="Company.aspx.designer.cs">
       <DependentUpon>Company.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Customer.aspx.cs">
+      <DependentUpon>Customer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer.aspx.designer.cs">
+      <DependentUpon>Customer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -149,6 +180,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Item.aspx.cs">
+      <DependentUpon>Item.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Item.aspx.designer.cs">
+      <DependentUpon>Item.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -157,6 +195,8 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Model\Company.cs" />
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\Item.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="PromotionService\Promotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
