@@ -101,9 +101,9 @@ Public Class Promotion
         Return promotion.GetUserByUserName(dataBaseName, userName)
     End Function
     <WebMethod()> _
-    Public Function GetAllCustomer(ByVal dataBaseName As String) As DataSet
+    Public Function GetAllCustomer(ByVal dataBaseName As String, ByVal companyCode As String, ByVal isAdmin As Boolean) As DataSet
         Dim promotion As New clsPromotion
-        Return promotion.GetAllCustomer(dataBaseName)
+        Return promotion.GetAllCustomer(dataBaseName, companyCode, isAdmin)
     End Function
     <WebMethod()> _
     Public Function GetCustomerByCode(ByVal dataBaseName As String, ByVal customerCode As String) As DataSet
@@ -111,9 +111,9 @@ Public Class Promotion
         Return promotion.GetCustomerByCode(dataBaseName, customerCode)
     End Function
     <WebMethod()> _
-    Public Function GetAllItem(ByVal dataBaseName As String) As DataSet
+    Public Function GetAllItem(ByVal dataBaseName As String, ByVal companyCode As String, ByVal isAdmin As Boolean) As DataSet
         Dim promotion As New clsPromotion
-        Return promotion.GetAllItem(dataBaseName)
+        Return promotion.GetAllItem(dataBaseName, companyCode, isAdmin)
     End Function
     <WebMethod()> _
     Public Function GetItemByCode(ByVal dataBaseName As String, ByVal itemCode As String) As DataSet

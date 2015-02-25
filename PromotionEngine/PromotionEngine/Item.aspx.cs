@@ -45,6 +45,7 @@ namespace PromotionEngine
                     if (tbUser != null && tbUser.Rows.Count > 0)
                     {
                         item.CreatedUserID = tbUser.Rows[0]["UserID"].ToString();
+                        item.CompanyCode = tbUser.Rows[0]["CompanyCode"].ToString();
                     }
                 }
             }
@@ -61,7 +62,8 @@ namespace PromotionEngine
         public static string GetItems()
         {
             Promotion pmt = new Promotion();
-            DataSet dsPromotion = pmt.GetAllItem(ConfigurationManager.AppSettings["DATABASE_NAME"].ToString());
+            DataSet dsPromotion = pmt.GetAllItem(ConfigurationManager.AppSettings["DATABASE_NAME"].ToString(), HttpContext.Current.Session["CompanyCode"].ToString(),
+                bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString()));
             if (dsPromotion != null)
             {
                 return JsonConvert.SerializeObject(dsPromotion.Tables[0]);

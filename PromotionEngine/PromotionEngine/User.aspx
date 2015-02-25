@@ -110,7 +110,7 @@
                             { field: "IsAdmin", title: "Admin" },
                             { field: "IsTrial", title: "Trial" },
                             { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                            { command: ["edit"], title: "Action", width: "100px"}]
                 , editable: {
                     mode: "popup",
                     template: $("#template").html(),

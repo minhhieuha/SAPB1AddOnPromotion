@@ -27,6 +27,8 @@ namespace PromotionEngine
             DataSet dsUser = pmt.GetLogin(ConfigurationManager.AppSettings["DATABASE_NAME"].ToString(), userName, passWord);
             if (dsUser != null && dsUser.Tables.Count > 0 && dsUser.Tables[0].Rows.Count > 0)
             {
+                HttpContext.Current.Session["IsAdmin"] = dsUser.Tables[0].Rows[0]["IsAdmin"];
+                HttpContext.Current.Session["CompanyCode"] = dsUser.Tables[0].Rows[0]["CompanyCode"];
                 HttpContext.Current.Session["LoginUser"] = dsUser.Tables[0];
             }
             else

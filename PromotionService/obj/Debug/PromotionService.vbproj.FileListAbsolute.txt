@@ -19,3 +19,4 @@ C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionServi
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.dll
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.xml
 C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.pdb
+C:\DATA\SAPB1AddOn\SAPB1AddOnPromotion\PromotionService\obj\Debug\PromotionService.vbprojResolveAssemblyReference.cache

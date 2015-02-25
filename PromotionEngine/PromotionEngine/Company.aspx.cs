@@ -16,11 +16,12 @@ namespace PromotionEngine
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!IsPostBack)
+            if (HttpContext.Current.Session["IsAdmin"] != null)
             {
-                //LoadData();
-
+                if (!bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString()))
+                {
+                    Response.Redirect("Login.aspx");
+                }
             }
         }
         [WebMethod]

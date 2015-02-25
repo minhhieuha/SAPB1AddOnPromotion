@@ -360,7 +360,7 @@
             Dim ds As New DataSet("oCompany")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser WHERE UserName = @Param1 AND Password = @Param2", New Object() {userName, passWord})
+                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oUser T0 LEFT JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode WHERE UserName = @Param1 AND Password = @Param2", New Object() {userName, passWord})
             End If
             Return ds
         Catch ex As Exception
@@ -419,13 +419,18 @@
             Throw ex
         End Try
     End Function
-    Public Function GetAllCustomer(ByVal dataBaseName As String) As DataSet
+    Public Function GetAllCustomer(ByVal dataBaseName As String, ByVal companyCode As String, ByVal isAdmin As Boolean) As DataSet
         Dim connect As New Connection()
         Try
             Dim ds As New DataSet("oCustomer")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode JOIN oUser T2 ON T0.CreatedUserID = T2.UserID ORDER BY T0.CustomerID DESC")
+                If isAdmin Then
+                    ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode JOIN oUser T2 ON T0.CreatedUserID = T2.UserID  ORDER BY T0.CustomerID DESC")
+                Else
+                    ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oCustomer T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode JOIN oUser T2 ON T0.CreatedUserID = T2.UserID  WHERE T0.CompanyCode = @Param1  ORDER BY T0.CustomerID DESC", New Object() {companyCode})
+
+                End If
             End If
             Return ds
         Catch ex As Exception
@@ -445,13 +450,17 @@
             Throw ex
         End Try
     End Function
-    Public Function GetAllItem(ByVal dataBaseName As String) As DataSet
+    Public Function GetAllItem(ByVal dataBaseName As String, ByVal companyCode As String, ByVal isAdmin As Boolean) As DataSet
         Dim connect As New Connection()
         Try
             Dim ds As New DataSet("oItem")
             Dim errMsg As String = connect.setSQLDB(dataBaseName)
             If errMsg.Length = 0 Then
-                ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode  ORDER BY ItemID DESC")
+                If (isAdmin) Then
+                    ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode  ORDER BY ItemID DESC")
+                Else
+                    ds = connect.ObjectGetAll_Query_SAP("SELECT * FROM oItem T0 JOIN oCompany T1 ON T0.CompanyCode = T1.CompanyCode WHERE T0.CompanyCode = @Param1  ORDER BY ItemID DESC", New Object() {companyCode})
+                End If
             End If
             Return ds
         Catch ex As Exception

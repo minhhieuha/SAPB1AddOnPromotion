@@ -64,11 +64,7 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public Promotion() {
-        String urlSetting = System.Configuration.ConfigurationManager.AppSettings["PromotionServiceWSURL"];
-        if (String.IsNullOrEmpty(urlSetting))
-            this.Url = "http://demo1.w4vn.com/Reports.asmx";
-        else
-            this.Url = urlSetting;
+        this.Url = "http://localhost:49311/Promotion.asmx";
     }
     
     /// <remarks/>
@@ -928,16 +924,20 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAllCustomer", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-    public System.Data.DataSet GetAllCustomer(string dataBaseName) {
+    public System.Data.DataSet GetAllCustomer(string dataBaseName, string companyCode, bool isAdmin) {
         object[] results = this.Invoke("GetAllCustomer", new object[] {
-                    dataBaseName});
+                    dataBaseName,
+                    companyCode,
+                    isAdmin});
         return ((System.Data.DataSet)(results[0]));
     }
     
     /// <remarks/>
-    public System.IAsyncResult BeginGetAllCustomer(string dataBaseName, System.AsyncCallback callback, object asyncState) {
+    public System.IAsyncResult BeginGetAllCustomer(string dataBaseName, string companyCode, bool isAdmin, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAllCustomer", new object[] {
-                    dataBaseName}, callback, asyncState);
+                    dataBaseName,
+                    companyCode,
+                    isAdmin}, callback, asyncState);
     }
     
     /// <remarks/>
@@ -947,17 +947,19 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     }
     
     /// <remarks/>
-    public void GetAllCustomerAsync(string dataBaseName) {
-        this.GetAllCustomerAsync(dataBaseName, null);
+    public void GetAllCustomerAsync(string dataBaseName, string companyCode, bool isAdmin) {
+        this.GetAllCustomerAsync(dataBaseName, companyCode, isAdmin, null);
     }
     
     /// <remarks/>
-    public void GetAllCustomerAsync(string dataBaseName, object userState) {
+    public void GetAllCustomerAsync(string dataBaseName, string companyCode, bool isAdmin, object userState) {
         if ((this.GetAllCustomerOperationCompleted == null)) {
             this.GetAllCustomerOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAllCustomerOperationCompleted);
         }
         this.InvokeAsync("GetAllCustomer", new object[] {
-                    dataBaseName}, this.GetAllCustomerOperationCompleted, userState);
+                    dataBaseName,
+                    companyCode,
+                    isAdmin}, this.GetAllCustomerOperationCompleted, userState);
     }
     
     private void OnGetAllCustomerOperationCompleted(object arg) {
@@ -1013,16 +1015,20 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAllItem", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-    public System.Data.DataSet GetAllItem(string dataBaseName) {
+    public System.Data.DataSet GetAllItem(string dataBaseName, string companyCode, bool isAdmin) {
         object[] results = this.Invoke("GetAllItem", new object[] {
-                    dataBaseName});
+                    dataBaseName,
+                    companyCode,
+                    isAdmin});
         return ((System.Data.DataSet)(results[0]));
     }
     
     /// <remarks/>
-    public System.IAsyncResult BeginGetAllItem(string dataBaseName, System.AsyncCallback callback, object asyncState) {
+    public System.IAsyncResult BeginGetAllItem(string dataBaseName, string companyCode, bool isAdmin, System.AsyncCallback callback, object asyncState) {
         return this.BeginInvoke("GetAllItem", new object[] {
-                    dataBaseName}, callback, asyncState);
+                    dataBaseName,
+                    companyCode,
+                    isAdmin}, callback, asyncState);
     }
     
     /// <remarks/>
@@ -1032,17 +1038,19 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     }
     
     /// <remarks/>
-    public void GetAllItemAsync(string dataBaseName) {
-        this.GetAllItemAsync(dataBaseName, null);
+    public void GetAllItemAsync(string dataBaseName, string companyCode, bool isAdmin) {
+        this.GetAllItemAsync(dataBaseName, companyCode, isAdmin, null);
     }
     
     /// <remarks/>
-    public void GetAllItemAsync(string dataBaseName, object userState) {
+    public void GetAllItemAsync(string dataBaseName, string companyCode, bool isAdmin, object userState) {
         if ((this.GetAllItemOperationCompleted == null)) {
             this.GetAllItemOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAllItemOperationCompleted);
         }
         this.InvokeAsync("GetAllItem", new object[] {
-                    dataBaseName}, this.GetAllItemOperationCompleted, userState);
+                    dataBaseName,
+                    companyCode,
+                    isAdmin}, this.GetAllItemOperationCompleted, userState);
     }
     
     private void OnGetAllItemOperationCompleted(object arg) {

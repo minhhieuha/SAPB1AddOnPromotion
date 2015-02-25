@@ -81,15 +81,19 @@
                 batch: true,
                 columns: [{ field: "ItemID", title: "ID", width: 80, hidden: true },
                             { field: "ItemCode", title: "Code", width: 100 },
-                            { field: "ItemName", title: "Name", width: 200 },
+                            { field: "ItemName", title: "Name" },
                             { field: "CompanyCode", title: "Company Code", hidden: true },
-                            { field: "CompanyName", title: "Company Name", width: 200 },
+                            <%if (bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString())){%>
+                            { field: "CompanyName", title: "Company Name", width: 300},
+                            <%} else{ %>
+                             {field: "CompanyName", title: "Company Name", width: 200, hidden: true},
+                            <%} %>
                             { field: "BasePrice", title: "Price", width: 200, format: "{0:c}",type:"number", attributes: { style: "text-align:right;"} },
                             { field: "CreatedUserID", title: "Created User", hidden: true },
                             { field: "CreatedDate", title: "Created Date", format: "{0:MM/dd/yyyy}", hidden: true },
-                            { field: "AllowPromotion", title: "AllowPromotion", width: 100 },
-                            { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                            { field: "AllowPromotion", title: "AllowPromotion", width: 200 },
+                            { field: "IsActive", title: "Active", width: 100 },
+                            { command: ["edit"], title: "Action", width: "100px"}]
                 , editable: {
                     mode: "popup",
                     template: $("#template").html(),
@@ -184,11 +188,11 @@
         <div class="k-edit-field" data-container-for="ItemName">
             <input name="ItemName" class="k-input k-textbox" required="required" type="text"
                 data-bind="value:ItemName"></div>
-        <div class="k-edit-label">
+        <div class="k-edit-label"  style="display:none;">
             <label for="CompanyCode">
                 Company</label></div>
-        <div data-container-for="CompanyCode" class="k-edit-field">
-         <input id="ddlCompany" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
+        <div data-container-for="CompanyCode" class="k-edit-field"  style="display:none;">
+         <input id="ddlCompany" data-bind="value:CompanyCode" validationMessage = "Company is required")>
         </div>
         <div class="k-edit-label">
             <label for="BasePrice">
@@ -198,7 +202,7 @@
             </div>
         <div class="k-edit-label">
             <label for="AllowPromotion">
-                AllowPromotion</label></div>
+                Allow Promotion</label></div>
         <div class="k-edit-field" data-container-for="AllowPromotion">
             <input name="AllowPromotion" type="checkbox" data-bind="checked:AllowPromotion" data-type="boolean"></div>
         <div class="k-edit-label">

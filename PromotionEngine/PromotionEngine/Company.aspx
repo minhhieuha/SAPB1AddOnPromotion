@@ -71,7 +71,7 @@
                             { field: "ContactPerson", title: "Contact Person" },
                             { field: "ContactPhone", title: "Contact Phone" },
                             { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                            { command: ["edit"], title: "Action", width: "100px"}]
                 , editable: {
                     mode: "popup",
                     confirmation: "Are you sure you want to remove this company?"

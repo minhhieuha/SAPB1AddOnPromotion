@@ -17,8 +17,13 @@ namespace PromotionEngine
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
+            if (HttpContext.Current.Session["IsAdmin"] != null)
+            {
+                if (!bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString()))
+                {
+                    Response.Redirect("Login.aspx");
+                }
+            }
         }
         [WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
