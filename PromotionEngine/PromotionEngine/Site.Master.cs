@@ -29,9 +29,9 @@ namespace PromotionEngine
                     if(bool.Parse(tbUser.Rows[0]["IsAdmin"].ToString()))
                     {
                         userName += " (Admin)";
-                        this.lblYouAreIn.Visible = false;
-                        this.lblCompany.Visible = false;
-                        this.lblTextCompany.Visible = false;
+                        //this.lblYouAreIn.Visible = false;
+                        //this.lblCompany.Visible = false;
+                        //this.lblTextCompany.Visible = false;
                     }
                     this.lblUserName.Text =userName;
                     this.lblCompany.Text = tbUser.Rows[0]["CompanyName"].ToString();
