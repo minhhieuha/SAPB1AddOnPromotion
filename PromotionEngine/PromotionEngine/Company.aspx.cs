@@ -25,6 +25,7 @@ namespace PromotionEngine
             }
         }
         [WebMethod]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public static string GetCompanys()
         {
             Promotion pmt = new Promotion();
@@ -44,7 +45,7 @@ namespace PromotionEngine
             }
         }
         [WebMethod]
-        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
         public static void UpdateCompany(string oCompany,bool isInsert)
         {
             Model.Company company = JsonConvert.DeserializeObject<Model.Company>(oCompany);

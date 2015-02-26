@@ -1,7 +1,8 @@
 ﻿Imports System.Web.Services
 Imports System.Web.Services.Protocols
 Imports System.ComponentModel
-
+Imports System.Web.Script.Services
+Imports System.Web.Script.Serialization
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 ' <System.Web.Script.Services.ScriptService()> _
 <System.Web.Services.WebService(Namespace:="http://tempuri.org/")> _
@@ -76,6 +77,7 @@ Public Class Promotion
 #End Region
 #Region "Query"
     <WebMethod()> _
+     <ScriptMethod(ResponseFormat:=ResponseFormat.Json, UseHttpGet:=False)> _
     Public Function GetLogin(ByVal dataBaseName As String, ByVal userName As String, ByVal passWord As String) As DataSet
         Dim promotion As New clsPromotion
         Return promotion.GetLogin(dataBaseName, userName, passWord)

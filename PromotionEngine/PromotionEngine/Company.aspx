@@ -1,14 +1,19 @@
-﻿<%@ Page  Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Company.aspx.cs" Inherits="PromotionEngine.Company" Title="Promotion Engine - Company" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Company.aspx.cs"
+    Inherits="PromotionEngine.Company" Title="Promotion Engine - Company" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
- 
     <script type="text/javascript">
         var oCompany = {};
         var isInsert = false;
         $(document).ready(function () {
+            $("#files").kendoUpload();
             GetCompanys();
+
         });
+        function importData() {
+            alert("aa");
+            return true;
+        }
         function initCompany() {
 
             oCompany.CompanyCode = '';
@@ -22,7 +27,7 @@
         //Get All Company
         function GetCompanys() {
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: "Company.aspx/GetCompanys",
                 data: '',
                 contentType: "application/json; charset=utf-8",
@@ -36,9 +41,31 @@
                 }
             });
         }
+        function addExtensionClass(extension) {
+            switch (extension) {
+                case '.jpg':
+                case '.img':
+                case '.png':
+                case '.gif':
+                    return "img-file";
+                case '.doc':
+                case '.docx':
+                    return "doc-file";
+                case '.xls':
+                case '.xlsx':
+                    return "xls-file";
+                case '.pdf':
+                    return "pdf-file";
+                case '.zip':
+                case '.rar':
+                    return "zip-file";
+                default:
+                    return "default-file";
+            }
+        }
     </script>
     <script type="text/javascript">
-       //Bind Data
+        //Bind Data
         function OnSuccess(response) {
             var data = $.parseJSON(response.d);
             var grid = $("#grid").kendoGrid({
@@ -59,19 +86,28 @@
                         }
                     }
                 },
-                filterable: true,
-                height: 500,
                 sortable: true,
-                toolbar: [{ name: 'create', text: 'Add New Company'}],
                 pageable: true,
+                groupable: true,
+                filterable: true,
+                columnMenu: true,
+                reorderable: true,
+                resizable: true,
+                height: 500,
+                toolbar: [{ name: 'create', text: 'Add New Company' }, { name: 'excel'},
+                 { text: '', template: kendo.template($("#grid_toolbar").html())}],
+                excel: {
+                    fileName: "Company List.xlsx",
+                    filterable: true
+                },
                 batch: true,
                 columns: [{ field: "CompanyCode", title: "Code", width: 100 },
                             { field: "CompanyName", title: "Name", width: 300 },
                             { field: "Address", title: "Address", width: 300 },
                             { field: "ContactPerson", title: "Contact Person" },
                             { field: "ContactPhone", title: "Contact Phone" },
-                            { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit"], title: "Action", width: "100px"}]
+                            { field: "IsActive", title: "Active", width: 100 },
+                            { command: ["edit"], title: "Action", width: "170px"}]
                 , editable: {
                     mode: "popup",
                     confirmation: "Are you sure you want to remove this company?"
@@ -125,7 +161,7 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                        //Reload Data 
+                            //Reload Data 
                             if (isInsert) {
                                 GetCompanys();
                             }
@@ -139,8 +175,17 @@
             });
         };
     </script>
-    <div style="position: absolute; z-index: 0;">
-    <div id="grid">
-    </div>
+    <script id="grid_toolbar" type="text/x-kendo-template">  
+    <span class="k-button k-button-icontext k-grid-excel" id="grid_toolbar_queryBtn"
+                onclick="return importData(); return true;"><span class="k-icon k-i-excel"></span>Import</span>
+    </script>
+    <div style="position: absolute; z-index: 0; direction: ltr; margin-right: 8px; margin-bottom: 5px;">
+        <div class="demo-section k-header" style="border-color: #ccc; border-radius: 4px;
+            border-width: 1px; border-style: solid;">
+            <input name="files" id="files" type="file" data-role="upload" autocomplete="off" text="Select import files....">
+        </div>
+        </br>
+        <div id="grid">
+        </div>
     </div>
 </asp:Content>
