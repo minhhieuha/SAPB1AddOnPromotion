@@ -6,6 +6,7 @@
         var oCustomer = {};
         var isInsert = false;
         var jsonCompany = {}
+        var grid;
         $(document).ready(function () {
             GetCompanys();
             GetCustomers();
@@ -51,7 +52,7 @@
         //Bind Data
         function OnSuccess(response) {
             var data = $.parseJSON(response.d);
-            var grid = $("#grid").kendoGrid({
+            grid = $("#grid").kendoGrid({
                 dataSource: { data: data,
                     pageSize: 20,
                     schema: {
@@ -78,23 +79,32 @@
                 filterable: true,
                 height: 500,
                 sortable: true,
-                toolbar: [{ name: 'create', text: 'Add New Customer'}],
+                selectable:true,
+                toolbar: [{ name: 'create', text: 'Add New Customer'},{name:'excel'}],
+                 excel: {
+                    fileName: "Customer List.xlsx",
+                    filterable: true
+                },
                 pageable: true,
                 batch: true,
                 columns: [{ field: "CustomerID", title: "ID", width: 80, hidden: true },
                             { field: "CustomerCode", title: "Code", width: 100 },
                             { field: "CustomerName", title: "Name", width: 200 },
                             { field: "CompanyCode", title: "Company Code", hidden: true },
+                              <%if (bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString())){%>
                             { field: "CompanyName", title: "Company Name", width: 200 },
+                            <%}else{ %>
+                             { field: "CompanyName", title: "Company Name", width: 200, hidden: true },
+                            <%} %>
                             { field: "ContactPerson", title: "Contact Person", width: 200 },
                             { field: "PhoneNumber", title: "Phone", width: 100 },
                             { field: "Email", title: "Email", width: 200 },
                             { field: "CreatedUserID", title: "Created User", hidden: true },
                             { field: "CreatedDate", title: "Created Date", format: "{0:MM/dd/yyyy}", hidden: true },
-                            { field: "BillingAddress", title: "Billing Address", width: 80 },
-                            { field: "ShippingAddress", title: "Shipping Address", width: 80 },
-                            { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                            { field: "BillingAddress", title: "Billing Address" },
+                            { field: "ShippingAddress", title: "Shipping Address" },
+                            { field: "IsActive", title: "Active", width: 100 },
+                            { command: ["edit"], title: "Action", width: "100px"}]
                 , editable: {
                     mode: "popup",
                     template: $("#template").html(),
@@ -134,17 +144,23 @@
                     var listTextBox = $("input:text");
                     for (var i = 0; i < listTextBox.length; i++) {
                         var name = listTextBox[i].name;
+                         if(name.length>0)
+                        {
                         oCustomer[name] = $("[name=" + name + "]").val();
+                        }
 
                     }
                     var listCheckBox = $("input:checkbox");
                     for (var i = 0; i < listCheckBox.length; i++) {
                         var name = listCheckBox[i].name;
+                         if(name.length>0)
+                        {
                         if ($("[name=" + name + "]").is(':checked')) {
                             oCustomer.IsActive = 'true';
                         }
                         else {
                             oCustomer.IsActive = 'false';
+                        }
                         }
                     }
                     oCustomer.Email = $("[name=Email]").val();
@@ -160,7 +176,9 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                            GetCustomers();
+                             if (isInsert) {
+                                    location.reload();
+                              }
                         },
                         error: function (xhr, status, err) {
                             var err = eval("(" + xhr.responseText + ")");
@@ -191,11 +209,11 @@
         <div class="k-edit-field" data-container-for="CustomerName">
             <input name="CustomerName" class="k-input k-textbox" required="required" type="text"
                 data-bind="value:CustomerName"></div>
-        <div class="k-edit-label">
+        <div class="k-edit-label"  style="display:none;">
             <label for="CompanyCode">
                 Company</label></div>
-        <div data-container-for="CompanyCode" class="k-edit-field">
-         <input id="ddlCompany" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
+        <div data-container-for="CompanyCode" class="k-edit-field"  style="display:none;">
+         <input id="ddlCompany" name="CompanyCode" data-bind="value:CompanyCode"validationMessage = "Company is required")>
         </div>
         <div class="k-edit-label">
             <label for="BillingAddress">

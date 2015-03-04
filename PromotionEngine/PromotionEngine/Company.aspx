@@ -2,77 +2,99 @@
     Inherits="PromotionEngine.Company" Title="Promotion Engine - Company" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <style type="text/css">
+        .k-upload-selected
+        {
+            display: none;
+        }
+    </style>
     <script type="text/javascript">
         var oCompany = {};
         var isInsert = false;
-        $(document).ready(function () {
-            $("#files").kendoUpload();
-            GetCompanys();
-
-        });
-        function importData() {
-            alert("aa");
-            return true;
+        var companyData;
+        var gird;
+        var fileUpload;
+        function showDetails(e) {
+            wnd.center().open();
         }
-        function initCompany() {
-
-            oCompany.CompanyCode = '';
-            oCompany.CompanyName = '';
-            oCompany.IsActive = false;
-            oCompany.Address = '';
-            oCompany.ContactPerson = "";
-            oCompany.ContactPhone = "";
-
+        function closeImport() {
+            resetUpload();
+            wnd.close();
         }
-        //Get All Company
-        function GetCompanys() {
-            $.ajax({
-                type: "GET",
-                url: "Company.aspx/GetCompanys",
-                data: '',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnSuccess,
-                failure: function (response) {
-                    alert(response.d);
-                },
-                error: function (response) {
-                    alert(response.d);
+        function ImportProcess(e) {
+            $('.k-upload-selected').trigger('click');
+            resetUpload();
+            wnd.close();
+        }
+        function getFileInfo(e) {
+            return $.map(e.files, function (file) {
+                var info = file.name;
+
+                // File size is not available in all browsers
+                if (file.size > 0) {
+                    info += " (" + Math.ceil(file.size / 1024) + " KB)";
                 }
+                return info;
+            }).join(", ");
+        }
+        function onUpload(e) {
+        }
+
+        function onSuccess(e) {
+           
+        }
+        $(document).ready(function () {
+            $("#btnImport").kendoButton({
+                spriteCssClass: "k-icon k-update"
             });
-        }
-        function addExtensionClass(extension) {
-            switch (extension) {
-                case '.jpg':
-                case '.img':
-                case '.png':
-                case '.gif':
-                    return "img-file";
-                case '.doc':
-                case '.docx':
-                    return "doc-file";
-                case '.xls':
-                case '.xlsx':
-                    return "xls-file";
-                case '.pdf':
-                    return "pdf-file";
-                case '.zip':
-                case '.rar':
-                    return "zip-file";
-                default:
-                    return "default-file";
-            }
-        }
-    </script>
-    <script type="text/javascript">
-        //Bind Data
-        function OnSuccess(response) {
-            var data = $.parseJSON(response.d);
-            var grid = $("#grid").kendoGrid({
-                dataSource: { data: data,
-                    pageSize: 20,
+            fileUpload = $("#files").kendoUpload({
+                multiple: false,
+                showFileList: true,
+                async: {
+                    saveUrl: "save",
+                    removeUrl: "remove",
+                    autoUpload: false
+                },
+                localization: {
+                    select: 'Select csv file'
+
+                },
+                //template: kendo.template($('#fileTemplate').html()),
+                select: onSelectUploadDataFile,
+                success: onSuccess,
+                upload: onUpload
+            });
+            //Import Template
+            //$("#importPopup").load("popup_import_data.htm");
+            //Import Popup
+            wnd = $("#importPopup")
+                        .kendoWindow({
+                            title: "Import Company",
+                            modal: true,
+                            visible: false,
+                            resizable: false,
+                            height: 230,
+                            width: 406
+                        }).data("kendoWindow");
+
+            //Load Grid
+            grid = $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            type: "GET",
+                            url: "Company.aspx/GetCompanys",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json"
+                        },
+                        serverPaging: true,
+                        serverSorting: true,
+                        serverFiltering: true
+                    },
+                    type: "odata", //Important!!!!
                     schema: {
-                        type: 'json',
+                        data: "d.Data",
+                        total: "d.Count",
                         model: {
                             id: "CompanyCode",
                             fields: {
@@ -87,15 +109,16 @@
                     }
                 },
                 sortable: true,
-                pageable: true,
-                groupable: true,
+                pageable: {
+                    pageSize: 20,
+                    refresh: true
+                },
                 filterable: true,
-                columnMenu: true,
                 reorderable: true,
                 resizable: true,
-                height: 500,
-                toolbar: [{ name: 'create', text: 'Add New Company' }, { name: 'excel'},
-                 { text: '', template: kendo.template($("#grid_toolbar").html())}],
+                height: 450,
+                toolbar: [{ name: 'create', text: 'Add New Company' }, { name: 'excel' },
+                                    { text: '', template: kendo.template($("#grid_toolbar").html())}],
                 excel: {
                     fileName: "Company List.xlsx",
                     filterable: true
@@ -107,19 +130,18 @@
                             { field: "ContactPerson", title: "Contact Person" },
                             { field: "ContactPhone", title: "Contact Phone" },
                             { field: "IsActive", title: "Active", width: 100 },
-                            { command: ["edit"], title: "Action", width: "170px"}]
-                , editable: {
+                            { command: ["edit"], title: "Action", width: "170px" }
+                            ],
+                editable: {
                     mode: "popup",
                     confirmation: "Are you sure you want to remove this company?"
                 },
                 edit: function (e) {
                     var editWindow = e.container.data("kendoWindow");
-
                     if (e.model.isNew()) {
                         e.container.data("kendoWindow").title('Add New Company');
                         $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Save";
                         isInsert = true;
-                        initCompany();
                     }
                     else {
                         e.container.data("kendoWindow").title('Edit Company');
@@ -127,27 +149,25 @@
                         isInsert = false;
                     }
                 },
-                remove: function (e) {
-                    //alert("delete event captured");
-                    //Do your logic here before delete the record.
-                },
                 save: function (e) {
-                    var that = this;
-                    var num = 1;
                     var listTextBox = $("input:text");
                     for (var i = 0; i < listTextBox.length; i++) {
                         var name = listTextBox[i].name;
-                        oCompany[name] = $("[name=" + name + "]").val();
+                        if (name.length > 0) {
+                            oCompany[name] = $("[name=" + name + "]").val();
+                        }
 
                     }
                     var listCheckBox = $("input:checkbox");
                     for (var i = 0; i < listCheckBox.length; i++) {
                         var name = listCheckBox[i].name;
-                        if ($("[name=" + name + "]").is(':checked')) {
-                            oCompany.IsActive = 'true';
-                        }
-                        else {
-                            oCompany.IsActive = 'false';
+                        if (name.length > 0) {
+                            if ($("[name=" + name + "]").is(':checked')) {
+                                oCompany.IsActive = 'true';
+                            }
+                            else {
+                                oCompany.IsActive = 'false';
+                            }
                         }
                     }
                     //Update or Insert Company
@@ -163,7 +183,7 @@
                         success: function (data) {
                             //Reload Data 
                             if (isInsert) {
-                                GetCompanys();
+                                grid.dataSource.read();
                             }
                         },
                         error: function (xhr, status, err) {
@@ -171,21 +191,41 @@
                             alert(err.Message);
                         }
                     });
+                    this.refresh();
                 }
-            });
-        };
+            }).data("kendoGrid");
+        });
     </script>
-    <script id="grid_toolbar" type="text/x-kendo-template">  
-    <span class="k-button k-button-icontext k-grid-excel" id="grid_toolbar_queryBtn"
-                onclick="return importData(); return true;"><span class="k-icon k-i-excel"></span>Import</span>
+    <script id="grid_toolbar" type="text/x-kendo-template">
+   <a href="\#" class="k-button k-button-icontext" id="grid_toolbar_queryBtn"       
+            onclick="return showDetails();"><span class="k-icon k-i-excel"></span>Import</a>
     </script>
-    <div style="position: absolute; z-index: 0; direction: ltr; margin-right: 8px; margin-bottom: 5px;">
-        <div class="demo-section k-header" style="border-color: #ccc; border-radius: 4px;
-            border-width: 1px; border-style: solid;">
-            <input name="files" id="files" type="file" data-role="upload" autocomplete="off" text="Select import files....">
-        </div>
-        </br>
-        <div id="grid">
-        </div>
+    <div id="grid">
+    </div>
+    <script id="fileTemplate" type="text/x-kendo-template">
+    <div>
+        <p>Name: #=name#</p>
+        <p>Size: #=size# bytes</p>
+       <p>Extension: #=files[0].extension#</p>
+    </div>
+    </script>
+    <div id="importPopup" style="padding: 0;">
+        <table style="width: 100%; height: 100%;" border="0px">
+            <tr>
+                <td style="height: 40%;">
+                    <input name="files" id="files" type="file" runat="server" clientidmode="Static" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="k-edit-form-container" style="position: relative;">
+                        <div class="k-edit-buttons k-state-default">
+                            <button type="button" id="btnImport" onclick="ImportProcess();" class="k-button k-button-icontext k-primary">
+                                Import File</button><a class="k-button k-button-icontext k-grid-cancel" href="#"
+                                    id="btnClose" onclick="closeImport();"><span class="k-icon k-cancel"></span>Cancel</a></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
 </asp:Content>

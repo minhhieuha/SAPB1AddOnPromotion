@@ -70,6 +70,69 @@
         function passwordEditor(container, options) {
             $('<input type="password" class="k-input k-textbox" required data-bind="value:' + options.field + '"/>').appendTo(container);
         };
+        function UpdateData() {
+            $.ajax({
+                type: "POST",
+                url: "User.aspx/UpdateUser",
+                data: JSON.stringify({
+                    oUser: JSON.stringify(oUser),
+                    isInsert: isInsert
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    
+                    //Reload Data 
+                    //GetUsers();
+//                    var resultData = {};
+//                    $.ajax({
+//                        type: "POST",
+//                        url: "User.aspx/GetUsers",
+//                        data: '',
+//                        contentType: "application/json; charset=utf-8",
+//                        dataType: "json",
+//                        success: function (data) {
+//                            alert(data.d);
+//                            resultData = $.parseJSON(data.d)
+//                            var dataSource = new kendo.data.DataSource({ data: resultData });
+
+//                            var grid = $('#grid').data("kendoGrid");
+//                            dataSource.read();
+//                            grid.setDataSource(dataSource)
+
+
+//                           
+//                        },
+//                        failure: function (response) {
+//                            alert(response.d);
+//                        },
+//                        error: function (response) {
+//                            alert(response.d);
+//                        }
+//                    });
+                    
+                },
+                error: function (xhr, status, err) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                }
+            });
+        }
+        function onRequestEnd(e) {
+
+
+            //Check request type
+            if (e.type == "create" || e.type == "update") {
+                //check for errors in the response
+                if (e.response == null || e.response.Errors == null) {
+                    $('#grid').data().kendoGrid.dataSource.read();
+                    alert("Update Successful");
+                }
+                else {
+                    alert("Update Failed");
+                }
+            }
+        }
         //Bind Data
         function OnSuccess(response) {
             var data = $.parseJSON(response.d);
@@ -97,7 +160,11 @@
                 filterable: true,
                 height: 500,
                 sortable: true,
-                toolbar: [{ name: 'create', text: 'Add New User'}],
+                toolbar: [{ name: 'create', text: 'Add New User' }, { name: 'excel'}],
+                excel: {
+                    fileName: "User List.xlsx",
+                    filterable: true
+                },
                 pageable: true,
                 batch: true,
                 columns: [{ field: "UserID", title: "UserID", width: 70, hidden: true },
@@ -147,52 +214,47 @@
                 remove: function (e) {
                     //alert("delete event captured");
                 },
+                onRequestEnd: onRequestEnd,
                 save: function (e) {
                     var that = this;
                     var num = 1;
                     var listTextBox = $("input:text");
                     for (var i = 0; i < listTextBox.length; i++) {
                         var name = listTextBox[i].name;
-                        oUser[name] = $("[name=" + name + "]").val();
+                        if (name.length > 0) {
+                            oUser[name] = $("[name=" + name + "]").val();
+                        }
                     }
                     var listPassword = $("input:password");
                     for (var i = 0; i < listPassword.length; i++) {
                         var name = listPassword[i].name;
-                        oUser[name] = $("[name=" + name + "]").val();
+                        if (name.length > 0) {
+                            if (name.length > 0) {
+                                oUser[name] = $("[name=" + name + "]").val();
+                            }
+                        }
                     }
 
                     var listCheckBox = $("input:checkbox");
                     for (var i = 0; i < listCheckBox.length; i++) {
                         var name = listCheckBox[i].name;
-                        if ($("[name=" + name + "]").is(':checked')) {
-                            oUser[name] = 'true';
-                        }
-                        else {
-                            oUser[name] = 'false';
+                        if (name.length > 0) {
+                            if ($("[name=" + name + "]").is(':checked')) {
+                                oUser[name] = 'true';
+                            }
+                            else {
+                                oUser[name] = 'false';
+                            }
                         }
                     }
                     oUser.Email = $("[name=Email]").val();
                     oUser.CompanyCode = $("#ddlCompany").val();
 
                     //Update or Insert User
-                    $.ajax({
-                        type: "POST",
-                        url: "User.aspx/UpdateUser",
-                        data: JSON.stringify({
-                            oUser: JSON.stringify(oUser),
-                            isInsert: isInsert
-                        }),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (data) {
-                            //Reload Data 
-                            GetUsers();
-                        },
-                        error: function (xhr, status, err) {
-                            var err = eval("(" + xhr.responseText + ")");
-                            alert(err.Message);
-                        }
-                    });
+                    UpdateData();
+                    if (isInsert) {
+                        location.reload();
+                    }
                 }
             });
         };
@@ -216,7 +278,7 @@
             <label for="CompanyCode">
                 Company</label></div>
         <div data-container-for="CompanyCode" class="k-edit-field">
-             <input id="ddlCompany" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
+             <input id="ddlCompany" name="CompanyCode" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
             </div>
         <div class="k-edit-label">
             <label for="Password">

@@ -64,7 +64,11 @@ public partial class Promotion : System.Web.Services.Protocols.SoapHttpClientPro
     
     /// <remarks/>
     public Promotion() {
-        this.Url = "http://localhost:49311/Promotion.asmx";
+        String urlSetting = System.Configuration.ConfigurationManager.AppSettings["PromotionServiceWSURL"];
+        if (String.IsNullOrEmpty(urlSetting))
+            this.Url = "http://demo1.w4vn.com/GetDefault.asmx";
+        else
+            this.Url = urlSetting;
     }
     
     /// <remarks/>

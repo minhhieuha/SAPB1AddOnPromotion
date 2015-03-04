@@ -19,7 +19,8 @@
      <link href="styles/kendo/kendo.common-bootstrap.min.css" />
     <link href="styles/kendo/kendo.bootstrap.min.css" rel="stylesheet" />
     <link href="styles/kendo/kendo.dataviz.bootstrap.min.css" rel="stylesheet" />
-    <script src="scripts/jquery.min.js" type="text/javascript"></script>
+    <%--<script src="scripts/jquery.min.js" type="text/javascript"></script>--%>
+     <script src="scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="scripts/kendo/kendo.all.min.js" type="text/javascript"></script>
     <script src="Scripts/menu_script.js" type="text/javascript"></script>
     <script src="Scripts/utils.js" type="text/javascript"></script>
@@ -31,12 +32,12 @@
         <h2>
             Promotion Engine</h2>
         <div style="position: absolute; right: 0px; width: 600px; margin-right: 10px; direction: rtl;">
-            Welcome
-            <asp:Label ID="lblUserName" runat="server" Font-Bold="True" Font-Italic="True" ForeColor="#0000CC"></asp:Label>
-            <asp:Label ID="lblYouAreIn" runat="server" Text="You are in"></asp:Label>
+            Welcome&nbsp;
+            <asp:Label ID="lblUserName" runat="server" Font-Bold="True" Font-Italic="True" ForeColor="#0000CC"></asp:Label>.
+            <asp:Label ID="lblYouAreIn" runat="server" Text="("></asp:Label>
             &nbsp;<asp:Label ID="lblCompany" runat="server" Font-Bold="True" Font-Italic="True"
                 ForeColor="#990033"></asp:Label>
-            <asp:Label ID="lblTextCompany" runat="server" Text="company."></asp:Label>
+            <asp:Label ID="lblTextCompany" runat="server" Text=")"></asp:Label>&nbsp;
             | &nbsp; &nbsp;<asp:LinkButton runat="server" ID="lnkLogOut" Text="Logout" OnClick="lnkLogOut_Click"
                 Font-Bold="True" Font-Italic="True"></asp:LinkButton>
         </div>
@@ -58,8 +59,8 @@
                 </li>
                 <li class='has-sub'><a href='#'><span>Setup</span></a>
                     <ul>
-                        <li><a href="Customer.aspx"><span>Customer Property</span></a></li>
-                        <li class='last'><a href="Item.aspx"><span>Item Property</span></a></li>
+                        <li><a href="Customer-Property.aspx"><span>Customer Property</span></a></li>
+                        <li class='last'><a href="Item-Property.aspx"><span>Item Property</span></a></li>
                     </ul>
                 </li>
                 <li class='last'>

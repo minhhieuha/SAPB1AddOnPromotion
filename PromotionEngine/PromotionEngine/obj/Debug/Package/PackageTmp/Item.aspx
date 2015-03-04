@@ -7,7 +7,7 @@
         var isInsert = false;
         var jsonCompany = {}
         $(document).ready(function () {
-           
+
             GetCompanys();
             GetItems();
         });
@@ -76,20 +76,28 @@
                 filterable: true,
                 height: 500,
                 sortable: true,
-                toolbar: [{ name: 'create', text: 'Add New Item'}],
+                toolbar: [{ name: 'create', text: 'Add New Item'},{name:'excel'}],
+                  excel: {
+                    fileName: "Item List.xlsx",
+                    filterable: true
+                },
                 pageable: true,
                 batch: true,
                 columns: [{ field: "ItemID", title: "ID", width: 80, hidden: true },
                             { field: "ItemCode", title: "Code", width: 100 },
-                            { field: "ItemName", title: "Name", width: 200 },
+                            { field: "ItemName", title: "Name" },
                             { field: "CompanyCode", title: "Company Code", hidden: true },
-                            { field: "CompanyName", title: "Company Name", width: 200 },
+                            <%if (bool.Parse(HttpContext.Current.Session["IsAdmin"].ToString())){%>
+                            { field: "CompanyName", title: "Company Name", width: 300},
+                            <%} else{ %>
+                             {field: "CompanyName", title: "Company Name", width: 200, hidden: true},
+                            <%} %>
                             { field: "BasePrice", title: "Price", width: 200, format: "{0:c}",type:"number", attributes: { style: "text-align:right;"} },
                             { field: "CreatedUserID", title: "Created User", hidden: true },
                             { field: "CreatedDate", title: "Created Date", format: "{0:MM/dd/yyyy}", hidden: true },
-                            { field: "AllowPromotion", title: "AllowPromotion", width: 100 },
-                            { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
+                            { field: "AllowPromotion", title: "AllowPromotion", width: 200 },
+                            { field: "IsActive", title: "Active", width: 100 },
+                            { command: ["edit"], title: "Action", width: "100px"}]
                 , editable: {
                     mode: "popup",
                     template: $("#template").html(),
@@ -129,17 +137,23 @@
                     var listTextBox = $("input:text");
                     for (var i = 0; i < listTextBox.length; i++) {
                         var name = listTextBox[i].name;
-                        oItem[name] = $("[name=" + name + "]").val();
+                        if(name.length>0)
+                        {
+                         oItem[name] = $("[name=" + name + "]").val();
+                        }
 
                     }
                     var listCheckBox = $("input:checkbox");
                     for (var i = 0; i < listCheckBox.length; i++) {
                         var name = listCheckBox[i].name;
-                        if ($("[name=" + name + "]").is(':checked')) {
-                            oItem[name] = 'true';
-                        }
-                        else {
-                            oItem[name] = 'false';
+                        if(name.length>0)
+                        {
+                            if ($("[name=" + name + "]").is(':checked')) {
+                                oItem[name] = 'true';
+                            }
+                            else {
+                                oItem[name] = 'false';
+                            }
                         }
                     }
                     oItem.BasePrice = $("[name=BasePrice]").val();
@@ -155,7 +169,9 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                            GetItems();
+                            if (isInsert) {
+                        location.reload();
+                    }
                         },
                         error: function (xhr, status, err) {
                             var err = eval("(" + xhr.responseText + ")");
@@ -184,11 +200,11 @@
         <div class="k-edit-field" data-container-for="ItemName">
             <input name="ItemName" class="k-input k-textbox" required="required" type="text"
                 data-bind="value:ItemName"></div>
-        <div class="k-edit-label">
+        <div class="k-edit-label"  style="display:none;">
             <label for="CompanyCode">
                 Company</label></div>
-        <div data-container-for="CompanyCode" class="k-edit-field">
-         <input id="ddlCompany" data-bind="value:CompanyCode" required="required" validationMessage = "Company is required")>
+        <div data-container-for="CompanyCode" class="k-edit-field"  style="display:none;">
+         <input id="ddlCompany" name="CompanyCode" data-bind="value:CompanyCode" validationMessage = "Company is required")>
         </div>
         <div class="k-edit-label">
             <label for="BasePrice">
@@ -198,7 +214,7 @@
             </div>
         <div class="k-edit-label">
             <label for="AllowPromotion">
-                AllowPromotion</label></div>
+                Allow Promotion</label></div>
         <div class="k-edit-field" data-container-for="AllowPromotion">
             <input name="AllowPromotion" type="checkbox" data-bind="checked:AllowPromotion" data-type="boolean"></div>
         <div class="k-edit-label">
@@ -208,7 +224,7 @@
             <input name="IsActive" type="checkbox" data-bind="checked:IsActive" data-type="boolean"></div>
     </script>
     <div style="position: absolute; z-index: 0;">
-    <div id="grid">
-    </div>
+        <div id="grid">
+        </div>
     </div>
 </asp:Content>

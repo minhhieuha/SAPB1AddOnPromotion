@@ -60,17 +60,21 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Company.aspx" />
+    <Content Include="Customer-Property.aspx" />
     <Content Include="Customer.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Images\bg1.png" />
     <Content Include="Images\bg2.png" />
     <Content Include="Images\loading.gif" />
+    <Content Include="Item-Property.aspx" />
     <Content Include="Item.aspx" />
     <Content Include="Lib\Newtonsoft.Json.dll" />
     <Content Include="Login.aspx" />
+    <Content Include="Popup_Import_Data.htm" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validationEngine-en.js" />
     <Content Include="Scripts\jquery.validationEngine.js" />
@@ -365,6 +369,13 @@
     <Compile Include="Company.aspx.designer.cs">
       <DependentUpon>Company.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Customer-Property.aspx.cs">
+      <DependentUpon>Customer-Property.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Customer-Property.aspx.designer.cs">
+      <DependentUpon>Customer-Property.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Customer.aspx.cs">
       <DependentUpon>Customer.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -381,6 +392,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Item-Property.aspx.cs">
+      <DependentUpon>Item-Property.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Item-Property.aspx.designer.cs">
+      <DependentUpon>Item-Property.aspx</DependentUpon>
     </Compile>
     <Compile Include="Item.aspx.cs">
       <DependentUpon>Item.aspx</DependentUpon>

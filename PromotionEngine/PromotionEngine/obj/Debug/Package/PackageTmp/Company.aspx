@@ -1,51 +1,53 @@
-﻿<%@ Page  Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="Company.aspx.cs" Inherits="PromotionEngine.Company" Title="Promotion Engine - Company" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Company.aspx.cs"
+    Inherits="PromotionEngine.Company" Title="Promotion Engine - Company" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
- 
     <script type="text/javascript">
         var oCompany = {};
         var isInsert = false;
+        var companyData;
+        var gird;
+        function showDetails(e) {
+            wnd.center().open();
+        }
+        function closeImport() {
+            wnd.close();
+        }
+        function ImportProcess() {
+            wnd.close();
+        }
         $(document).ready(function () {
-            GetCompanys();
-        });
-        function initCompany() {
+            //Import Template
+            $("#importPopup").load("popup_import_data.htm");
+            //Import Popup
+            wnd = $("#importPopup")
+                        .kendoWindow({
+                            title: "Import Company",
+                            modal: true,
+                            visible: false,
+                            resizable: false,
+                            height: 150,
+                            width: 406
+                        }).data("kendoWindow");
 
-            oCompany.CompanyCode = '';
-            oCompany.CompanyName = '';
-            oCompany.IsActive = false;
-            oCompany.Address = '';
-            oCompany.ContactPerson = "";
-            oCompany.ContactPhone = "";
-
-        }
-        //Get All Company
-        function GetCompanys() {
-            $.ajax({
-                type: "POST",
-                url: "Company.aspx/GetCompanys",
-                data: '',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnSuccess,
-                failure: function (response) {
-                    alert(response.d);
-                },
-                error: function (response) {
-                    alert(response.d);
-                }
-            });
-        }
-    </script>
-    <script type="text/javascript">
-       //Bind Data
-        function OnSuccess(response) {
-            var data = $.parseJSON(response.d);
-            var grid = $("#grid").kendoGrid({
-                dataSource: { data: data,
-                    pageSize: 20,
+            //Load Grid
+            grid = $("#grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            type: "GET",
+                            url: "Company.aspx/GetCompanys1",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json"
+                        },
+                        serverPaging: true,
+                        serverSorting: true,
+                        serverFiltering: true
+                    },
+                    type: "odata", //Important!!!!
                     schema: {
-                        type: 'json',
+                            data: "d.Data",
+                            total: "d.Count",
                         model: {
                             id: "CompanyCode",
                             fields: {
@@ -59,31 +61,40 @@
                         }
                     }
                 },
-                filterable: true,
-                height: 500,
                 sortable: true,
-                toolbar: [{ name: 'create', text: 'Add New Company'}],
-                pageable: true,
+                pageable: {
+                    pageSize: 20,
+                    refresh: true
+                },
+                filterable: true,
+                reorderable: true,
+                resizable: true,
+                height: 450,
+                toolbar: [{ name: 'create', text: 'Add New Company' }, { name: 'excel' },
+                                    { text: '', template: kendo.template($("#grid_toolbar").html())}],
+                excel: {
+                    fileName: "Company List.xlsx",
+                    filterable: true
+                },
                 batch: true,
                 columns: [{ field: "CompanyCode", title: "Code", width: 100 },
                             { field: "CompanyName", title: "Name", width: 300 },
                             { field: "Address", title: "Address", width: 300 },
                             { field: "ContactPerson", title: "Contact Person" },
                             { field: "ContactPhone", title: "Contact Phone" },
-                            { field: "IsActive", title: "Active", width: 70 },
-                            { command: ["edit", "destroy"], title: "Action", width: "170px"}]
-                , editable: {
+                            { field: "IsActive", title: "Active", width: 100 },
+                            { command: ["edit"], title: "Action", width: "170px" }
+                            ],
+                editable: {
                     mode: "popup",
                     confirmation: "Are you sure you want to remove this company?"
                 },
                 edit: function (e) {
                     var editWindow = e.container.data("kendoWindow");
-
                     if (e.model.isNew()) {
                         e.container.data("kendoWindow").title('Add New Company');
                         $("a.k-grid-update")[0].innerHTML = "<span class='k-icon k-update'></span>Save";
                         isInsert = true;
-                        initCompany();
                     }
                     else {
                         e.container.data("kendoWindow").title('Edit Company');
@@ -91,27 +102,25 @@
                         isInsert = false;
                     }
                 },
-                remove: function (e) {
-                    //alert("delete event captured");
-                    //Do your logic here before delete the record.
-                },
                 save: function (e) {
-                    var that = this;
-                    var num = 1;
                     var listTextBox = $("input:text");
                     for (var i = 0; i < listTextBox.length; i++) {
                         var name = listTextBox[i].name;
-                        oCompany[name] = $("[name=" + name + "]").val();
+                        if (name.length > 0) {
+                            oCompany[name] = $("[name=" + name + "]").val();
+                        }
 
                     }
                     var listCheckBox = $("input:checkbox");
                     for (var i = 0; i < listCheckBox.length; i++) {
                         var name = listCheckBox[i].name;
-                        if ($("[name=" + name + "]").is(':checked')) {
-                            oCompany.IsActive = 'true';
-                        }
-                        else {
-                            oCompany.IsActive = 'false';
+                        if (name.length > 0) {
+                            if ($("[name=" + name + "]").is(':checked')) {
+                                oCompany.IsActive = 'true';
+                            }
+                            else {
+                                oCompany.IsActive = 'false';
+                            }
                         }
                     }
                     //Update or Insert Company
@@ -125,9 +134,9 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                        //Reload Data 
+                            //Reload Data 
                             if (isInsert) {
-                                GetCompanys();
+                                grid.dataSource.read();
                             }
                         },
                         error: function (xhr, status, err) {
@@ -135,12 +144,17 @@
                             alert(err.Message);
                         }
                     });
+                    this.refresh();
                 }
-            });
-        };
+            }).data("kendoGrid");
+        });
     </script>
-    <div style="position: absolute; z-index: 0;">
+    <script id="grid_toolbar" type="text/x-kendo-template">
+   <a href="\#" class="k-button k-button-icontext" id="grid_toolbar_queryBtn"       
+            onclick="return showDetails();"><span class="k-icon k-i-excel"></span>Import</a>
+    </script>
     <div id="grid">
     </div>
+    <div id="importPopup" style="padding: 0;">
     </div>
 </asp:Content>
